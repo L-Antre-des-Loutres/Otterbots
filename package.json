@@ -1,0 +1,32 @@
+{
+  "name": "otterbots",
+  "version": "1.0.0",
+  "description": "Un framework pour les bots discord de l'antre des loutres",
+  "homepage": "https://github.com/L-Antre-des-Loutres/Otterbots#readme",
+  "bugs": {
+    "url": "https://github.com/L-Antre-des-Loutres/Otterbots/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/L-Antre-des-Loutres/Otterbots.git"
+  },
+  "license": "MIT",
+  "author": "Antre des Loutres",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run build && node ./build/otterbots/index.js",
+    "build": "npm run lint && tsc",
+    "lint": "npx eslint \"src/**/*.ts\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "figlet": "^1.9.3",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "eslint": "^9.37.0"
+  }
+}
