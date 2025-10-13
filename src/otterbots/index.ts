@@ -2,13 +2,14 @@ import {displayLogo} from "./utils/displayLogo";
 import dotenv from 'dotenv';
 import {getClient} from "../app/config/client";
 import {Client} from "discord.js";
+import {otterlogs} from "./utils/otterlogs";
 
 // On active les variables d'environnement'
 dotenv.config()
 
 export class Otterbots {
 
-    private client: Client;
+    private readonly client: Client;
 
     constructor(client?: Client) {
         this.client = client ?? getClient();
@@ -27,7 +28,7 @@ export class Otterbots {
     private clientReady(client: Client) {
         client.on('clientReady', () => {
             const now = new Date()
-            console.log(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
+            otterlogs.success(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
         })
     }
 }
