@@ -1,4 +1,7 @@
 import {Otterbots} from "../otterbots";
 
-// Démarre le bot
-Otterbots.start();
+// On récupére l'instance du bot
+const bot = new Otterbots();
+
+// On lance le bot
+bot.start();

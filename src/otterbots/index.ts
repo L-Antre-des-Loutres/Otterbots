@@ -7,19 +7,24 @@ import {Client} from "discord.js";
 dotenv.config()
 
 export class Otterbots {
-    public static start() {
+
+    private client: Client;
+
+    constructor(client?: Client) {
+        this.client = client ?? getClient();
+    }
+
+    public start() {
         displayLogo(process.env.BOT_NAME);
 
-        const client =  getClient();
-
-        client.login(process.env.BOT_TOKEN)
+        this.client.login(process.env.BOT_TOKEN)
 
         // Évènement du bot
-        this.clientReady(client)
+        this.clientReady(this.client)
     }
 
     // Event de démarrage du bot
-    private static clientReady(client: Client) {
+    private clientReady(client: Client) {
         client.on('clientReady', () => {
             const now = new Date()
             console.log(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
