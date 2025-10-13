@@ -15,12 +15,14 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run build && node ./build/otterbots/index.js",
+    "dev": "npm run build && node ./build/app/index.js",
     "build": "npm run lint && tsc",
     "lint": "npx eslint \"src/**/*.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "discord.js": "^14.23.2",
+    "dotenv": "^17.2.3",
     "figlet": "^1.9.3",
     "typescript": "^5.9.3"
   },
