@@ -8,8 +8,6 @@ import {loadCommands} from "./handlers/commandHandler";
 // On active les variables d'environnement'
 dotenv.config()
 
-otterlogs.important(`🔑 .env loaded?" ${process.env.BOT_TOKEN ? "Yes" : "No"}`);
-
 export class Otterbots {
 
     private readonly client: Client;
@@ -26,6 +24,7 @@ export class Otterbots {
 
         // Évènement du bot
         this.clientReady(this.client)
+        this.interactionCreate(this.client)
 
         // Start handlers
         this.startHandlers(this.client)
@@ -38,6 +37,35 @@ export class Otterbots {
             otterlogs.success(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
         })
     }
+    
+    private async interactionCreate(client: Client) {
+        client.on('interactionCreate', async (interaction) => {
+            if (!interaction.isChatInputCommand()) return;
+            const command = interaction.client.slashCommands.get(interaction.commandName);
+            if (!command) {
+                console.error(`No command matching ${interaction.commandName} was found.`);
+                return;
+            }
+            try {
+                await command.execute(interaction);
+            } catch (error) {
+                console.error(error);
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.followUp({
+                        content: '🦦 Oups! Une loutre a fait tomber le serveur dans l\'eau! La commande n\'a pas pu être exécutée.',
+                        ephemeral: true
+                    });
+                } else {
+                    await interaction.reply({
+                        content: '🦦 La loutre responsable de cette commande est partie faire la sieste! Réessayez plus tard.',
+                        ephemeral: true
+                    });
+                }
+            }
+        });
+    }
+
+    
 
     // Command handlers
     private async startHandlers(client: Client) {
