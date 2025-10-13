@@ -1,8 +1,8 @@
 import figlet from "figlet";
 
-export function displayLogo(): void {
+export function displayLogo(name: string = "Otterbots"): void {
     console.log(
-        figlet.textSync("Otterbots", {
+        figlet.textSync(name, {
             font: "Standard", // ou "Slant", "Big", "Ghost", etc.
             horizontalLayout: "default",
             verticalLayout: "default"
