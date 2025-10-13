@@ -43,13 +43,13 @@ export class Otterbots {
             if (!interaction.isChatInputCommand()) return;
             const command = interaction.client.slashCommands.get(interaction.commandName);
             if (!command) {
-                console.error(`No command matching ${interaction.commandName} was found.`);
+                otterlogs.error(`No command matching ${interaction.commandName} was found.`);
                 return;
             }
             try {
                 await command.execute(interaction);
             } catch (error) {
-                console.error(error);
+                otterlogs.error(`${error}`);
                 if (interaction.replied || interaction.deferred) {
                     await interaction.followUp({
                         content: '🦦 Oups! Une loutre a fait tomber le serveur dans l\'eau! La commande n\'a pas pu être exécutée.',
