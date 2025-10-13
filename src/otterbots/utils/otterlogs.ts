@@ -1,5 +1,21 @@
 import { WebhookClient } from "discord.js";
 
+/**
+ * An object containing ANSI color codes for styled log messages.
+ *
+ * Each property represents a specific log style or color formatting
+ * that can be used to enhance the visibility and differentiation
+ * of log outputs in the console.
+ *
+ * Properties:
+ * - `success` - ANSI color-coded string representing a success log label.
+ * - `info` - ANSI color-coded string representing an info log label.
+ * - `warn` - ANSI color-coded string representing a warning log label.
+ * - `error` - ANSI color-coded string representing an error log label.
+ * - `errorColor` - ANSI color code for error-related text styling.
+ * - `importantColor` - ANSI color code for highlighting important text.
+ * - `resetColor` - ANSI color code to reset text styling to default.
+ */
 const logStyles = {
     success: "\u001b[32m[success]\u001b[0m",
     info: "\u001b[34m[info]\u001b[0m",
@@ -18,7 +34,7 @@ const logStyles = {
  * @property error - Red [error] prefix + Discord error webhook
  * @property important - Yellow text + Discord webhook
  * @property silentlog - Plain console log only
- **/
+ */
 export const otterlogs = {
     success: (message: string): void => {
         console.log(logStyles.success, message);
@@ -45,7 +61,7 @@ export const otterlogs = {
     }
 };
 
-// Fonction pour envoyer un message dans le salon de logs
+// Fonction pour envoyer un message dans le salon de logs via webhook
 function sendLogMessage(message: string, error: boolean, type?: string): void {
     if (process.env.ENABLE_DISCORD_SUCCESS === "false" && type === "success") return;
     if (process.env.ENABLE_DISCORD_LOGS === "false" && type === "log") return;
