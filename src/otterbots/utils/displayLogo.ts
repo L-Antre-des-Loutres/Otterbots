@@ -8,6 +8,7 @@ export function displayLogo(name: string = "Otterbots"): void {
             verticalLayout: "default"
         })
     );
+    console.log("\n✨  Made with 🦦 by Antre des Loutres ✨\n");
 
 }
 
