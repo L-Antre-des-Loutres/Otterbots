@@ -8,6 +8,11 @@ import {loadCommands} from "./handlers/commandHandler";
 // On active les variables d'environnement'
 dotenv.config()
 
+/**
+ * La classe `Otterbots` est responsable de l'initialisation et de la gestion d'un client bot,
+ * de la gestion des événements tels que l'état prêt et les commandes d'interaction, et du chargement
+ * des gestionnaires de commandes pour le bot.
+ */
 export class Otterbots {
 
     private readonly client: Client;
@@ -27,7 +32,7 @@ export class Otterbots {
         this.interactionCreate(this.client)
 
         // Start handlers
-        this.startHandlers(this.client)
+        this.commandHandler(this.client)
     }
 
     // Event de démarrage du bot
@@ -37,7 +42,8 @@ export class Otterbots {
             otterlogs.success(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
         })
     }
-    
+
+    // Event de gestion des commandes
     private async interactionCreate(client: Client) {
         client.on('interactionCreate', async (interaction) => {
             if (!interaction.isChatInputCommand()) return;
@@ -65,10 +71,8 @@ export class Otterbots {
         });
     }
 
-    
-
     // Command handlers
-    private async startHandlers(client: Client) {
+    private async commandHandler(client: Client) {
         await loadCommands(client)
     }
 }

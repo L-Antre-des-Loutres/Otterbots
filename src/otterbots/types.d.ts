@@ -21,7 +21,6 @@ declare module "discord.js" {
     }
 }
 
-
 export interface SlashCommand {
     name: string,
     data: SlashCommandBuilder;
