@@ -33,6 +33,9 @@ export class Otterbots {
 
         // Start handlers
         this.commandHandler(this.client)
+
+        // Init salons
+        this.initSalons()
     }
 
     // Event de démarrage du bot
@@ -75,4 +78,11 @@ export class Otterbots {
     private async commandHandler(client: Client) {
         await loadCommands(client)
     }
+
+    // Initialisation des salons
+    private async initSalons() {
+      // TODO : Ajouter les salons
+    }
+
+
 }
