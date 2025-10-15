@@ -4,6 +4,7 @@ import {getClient} from "../app/config/client";
 import {Client} from "discord.js";
 import {otterlogs} from "./utils/otterlogs";
 import {loadCommands} from "./handlers/commandHandler";
+import {createSalon} from "./utils/salon";
 
 // On active les variables d'environnement'
 dotenv.config()
@@ -28,15 +29,19 @@ export class Otterbots {
         this.client.login(process.env.BOT_TOKEN)
 
         // Évènement du bot
-        this.clientReady(this.client)
-        this.interactionCreate(this.client)
+        this.clientReady()
+        this.interactionCreate()
 
         // Start handlers
-        this.commandHandler(this.client)
+        this.commandHandler()
+
+        // Start salons
+        this.initSalons()
+
     }
 
     // Event de démarrage du bot
-    private clientReady(client: Client) {
+    private clientReady(client: Client = this.client) {
         client.on('clientReady', () => {
             const now = new Date()
             otterlogs.success(`Bot is ready at ${now.toLocaleString()} for ${client.user?.tag}!`)
@@ -44,7 +49,7 @@ export class Otterbots {
     }
 
     // Event de gestion des commandes
-    private async interactionCreate(client: Client) {
+    private async interactionCreate(client: Client = this.client) {
         client.on('interactionCreate', async (interaction) => {
             if (!interaction.isChatInputCommand()) return;
             const command = interaction.client.slashCommands.get(interaction.commandName);
@@ -72,7 +77,14 @@ export class Otterbots {
     }
 
     // Command handlers
-    private async commandHandler(client: Client) {
+    private async commandHandler(client: Client = this.client) {
         await loadCommands(client)
     }
+
+    // Initialisation des salons
+    private async initSalons(client: Client = this.client) {
+      await createSalon(client)
+    }
+
+
 }
