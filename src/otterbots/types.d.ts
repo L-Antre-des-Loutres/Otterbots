@@ -5,6 +5,7 @@ declare global {
         interface ProcessEnv {
             BOT_TOKEN: string
             DISCORD_CLIENT_ID: string
+            DISCORD_GUILD_ID: string
             GIT_REPOSITORY: string
             PROJECT_LOGO: string
             BOT_NAME: string
