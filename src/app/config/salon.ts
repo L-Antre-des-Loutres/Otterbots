@@ -9,9 +9,10 @@ const ROLE_ID = "1254833145749049385";
  * @property {string} role_id The identifier of the role associated with the category.
   **/
 export const salonCategory: SalonCategory[] = [
+    // Here your list of categories
     {
         id: 1,
-        name: "Test",
+        name: "Test2",
         role_id: ROLE_ID
     }
 ]
@@ -25,34 +26,11 @@ export const salonCategory: SalonCategory[] = [
  * @property {number} category The category ID associated with the salon.
  */
 export const botSalon: SalonType[] = [
+    // Here your list of salons
     {
         name: "general",
         role_id: ROLE_ID,
         type: 0,
-        category: 1
+        category: 2
     },
-    {
-        name: "annonces",
-        role_id: ROLE_ID,
-        type: 0,
-        category: 1
-    },
-    {
-        name: "discussions",
-        role_id: ROLE_ID,
-        type: 0,
-        category: 1
-    },
-    {
-        name: "bot-commands",
-        role_id: ROLE_ID,
-        type: 0,
-        category: 1
-    },
-    {
-        name: "musique",
-        role_id: ROLE_ID,
-        type: 0,
-        category: 1
-    }
 ];

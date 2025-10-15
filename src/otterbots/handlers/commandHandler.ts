@@ -6,9 +6,10 @@ import { SlashCommand } from "../types";
 import {otterlogs} from "../utils/otterlogs";
 
 /**
- * Charge toutes les commandes et les enregistre dans Discord
+ * Load all commands from the commands folder
+ * @param client
  */
-export async function loadCommands(client: Client) {
+export async function loadCommands(client: Client): Promise<void> {
     const rootDir = path.join(__dirname, "..");
     const commandsPath = path.join(rootDir, "commands");
     const commandFiles = getAllCommandFiles(commandsPath);
@@ -36,7 +37,7 @@ export async function loadCommands(client: Client) {
         commandsData.push(command.data.toJSON());
     }
 
-    // 🔁 Envoi à Discord
+    // Send commands to Discord
     const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN!);
     await rest.put(
         Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
@@ -47,7 +48,12 @@ export async function loadCommands(client: Client) {
 }
 
 /**
- * Récupère récursivement tous les fichiers de commande
+ * Recursively retrieves all command files from a specified directory.
+ * The method filters files based on their extension, which depends
+ * on whether the build or source folder is currently in use (.js or .ts).
+ *
+ * @param {string} dir - The directory to search for command files.
+ * @return {string[]} An array of file paths to all command files found within the directory.
  */
 function getAllCommandFiles(dir: string): string[] {
     const files = fs.readdirSync(dir, { withFileTypes: true });
@@ -64,7 +70,10 @@ function getAllCommandFiles(dir: string): string[] {
 }
 
 /**
- * Résout les exports multiples (default imbriqué)
+ * Resolves the default export of a module, if present, by traversing the `default` property chain.
+ *
+ * @param {unknown} module - The module to resolve the command from. It can be any type.
+ * @return {unknown} The resolved command or the original module if no `default` chain exists.
  */
 function resolveCommand(module: unknown): unknown {
     let cmd: unknown = module;
@@ -75,7 +84,10 @@ function resolveCommand(module: unknown): unknown {
 }
 
 /**
- * Type guard pour vérifier que l'objet est bien un SlashCommand
+ * Determines if the provided object is a valid SlashCommand.
+ *
+ * @param {unknown} command - The object to be verified as a SlashCommand.
+ * @return {boolean} Returns `true` if the object conforms to the SlashCommand structure; otherwise, returns `false`.
  */
 function isSlashCommand(command: unknown): command is SlashCommand {
     return (

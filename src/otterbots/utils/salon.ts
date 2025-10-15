@@ -14,8 +14,14 @@ export type SalonType = {
     categoryName: string;
 }
 
-export async function createSalon(client: Client) {
-    client.on('clientReady', async () => {
+/**
+ * Creates Discord text channels within specific categories for a guild. Ensures that categories and channels are created only if they do not already exist, and manages permissions for a specific role.
+ *
+ * @param {Client} client The Discord bot client instance used to interact with the Discord API and execute guild-related operations.
+ * @return {Promise<void>} A promise that resolves once the channels and roles are created or the operation concludes. If an error occurs, it logs the error and does not throw it further.
+ */
+export async function createSalon(client: Client): Promise<void> {
+    client.on('clientReady', async () : Promise<void> => {
         try {
             const channelNames: SalonType[] = [];
             // Noms des salons à créer
