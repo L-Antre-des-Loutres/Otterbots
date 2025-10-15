@@ -2,7 +2,7 @@ import {displayLogo} from "./utils/displayLogo";
 import dotenv from 'dotenv';
 import {getClient} from "../app/config/client";
 import {Client} from "discord.js";
-import {loadCommands} from "./handlers/commandHandler";
+import {otterBots_loadCommands} from "./handlers/commandHandler";
 import {otterBots_initSalon} from "./utils/salon";
 import {otterBots_commandInteraction} from "./event/commandInteraction";
 import {otterBots_clientReady} from "./event/clientReady";
@@ -53,7 +53,7 @@ export class Otterbots {
 
     // Command handlers
     private async commandHandler(client: Client = this.client): Promise<void> {
-        await loadCommands(client)
+        await otterBots_loadCommands(client)
     }
 
     // Initialisation des salons
