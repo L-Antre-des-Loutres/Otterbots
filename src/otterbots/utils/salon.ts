@@ -20,7 +20,7 @@ export type SalonType = {
  * @param {Client} client The Discord bot client instance used to interact with the Discord API and execute guild-related operations.
  * @return {Promise<void>} A promise that resolves once the channels and roles are created or the operation concludes. If an error occurs, it logs the error and does not throw it further.
  */
-export async function createSalon(client: Client): Promise<void> {
+export async function otterBots_initSalon(client: Client): Promise<void> {
     client.on('clientReady', async () : Promise<void> => {
         try {
             const channelNames: SalonType[] = [];

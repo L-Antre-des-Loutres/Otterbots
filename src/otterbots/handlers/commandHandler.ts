@@ -71,7 +71,6 @@ function getAllCommandFiles(dir: string): string[] {
 
 /**
  * Resolves the default export of a module, if present, by traversing the `default` property chain.
- *
  * @param {unknown} module - The module to resolve the command from. It can be any type.
  * @return {unknown} The resolved command or the original module if no `default` chain exists.
  */

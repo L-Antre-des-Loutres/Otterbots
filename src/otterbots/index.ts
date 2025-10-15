@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import {getClient} from "../app/config/client";
 import {Client} from "discord.js";
 import {loadCommands} from "./handlers/commandHandler";
-import {createSalon} from "./utils/salon";
+import {otterBots_initSalon} from "./utils/salon";
 import {otterBots_commandInteraction} from "./event/commandInteraction";
 import {otterBots_clientReady} from "./event/clientReady";
 
@@ -58,7 +58,7 @@ export class Otterbots {
 
     // Initialisation des salons
     private async initSalons(client: Client = this.client): Promise<void> {
-      await createSalon(client)
+      await otterBots_initSalon(client)
     }
 
 
