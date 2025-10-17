@@ -6,14 +6,14 @@ import {otterBots_loadCommands} from "./handlers/commandHandler";
 import {otterBots_initSalon} from "./utils/salon";
 import {otterBots_commandInteraction} from "./event/commandInteraction";
 import {otterBots_clientReady} from "./event/clientReady";
+import {otterBots_setActivity} from "./utils/activity";
 
-// On active les variables d'environnement'
 dotenv.config()
 
 /**
- * La classe `Otterbots` est responsable de l'initialisation et de la gestion d'un client bot,
- * de la gestion des événements tels que l'état prêt et les commandes d'interaction, et du chargement
- * des gestionnaires de commandes pour le bot.
+ * The `Otterbots` class is responsible for initializing and managing a bot client,
+ * handling events such as ready state and interaction commands, and loading
+ * command handlers for the bot.
  */
 export class Otterbots {
 
@@ -39,6 +39,11 @@ export class Otterbots {
         // Start salons
         this.initSalons()
 
+    }
+    
+    // Mettre une activité en cours
+    public setActivity(activityType: string = "playing", activity: string) {
+        otterBots_setActivity(activityType, activity, this.client)
     }
 
     // Event de démarrage du bot
