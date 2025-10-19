@@ -1,6 +1,6 @@
 import {displayLogo} from "./utils/displayLogo";
 import dotenv from 'dotenv';
-import {getClient} from "../app/config/client";
+import {clientGatewayIntent} from "../app/config/client";
 import {Client} from "discord.js";
 import {otterBots_loadCommands} from "./handlers/commandHandler";
 import {otterBots_initSalon} from "./utils/salon";
@@ -18,10 +18,10 @@ dotenv.config()
  */
 export class Otterbots {
 
-    private readonly client: Client;
+    private client: Client;
 
     constructor(client?: Client) {
-        this.client = client ?? getClient();
+        this.client = client ?? clientGatewayIntent
     }
 
     // Lancement du bot
@@ -37,12 +37,19 @@ export class Otterbots {
         // Start handlers
         this.commandHandler()
 
+        // Test des commandes
+        this.testsCommands()
+
         // Start salons
         this.initSalons()
 
         // Start emote react
         this.initEmoteReact()
 
+    }
+
+    public getClient() {
+        return this.client
     }
     
     // Mettre une activité en cours
@@ -63,6 +70,12 @@ export class Otterbots {
     // Command handlers
     private async commandHandler(client: Client = this.client): Promise<void> {
         await otterBots_loadCommands(client)
+    }
+
+    // Test commands
+    private async testsCommands(client: Client = this.client): Promise<void> {
+        this.client = client;
+        // TODO : Mettre en place les commandes de test
     }
 
     // Initialisation des salons

@@ -1,4 +1,13 @@
-import {ChatInputCommandInteraction, Collection, SlashCommandBuilder} from "discord.js"
+import {
+    AutocompleteInteraction,
+    ButtonInteraction,
+    CacheType, ChannelSelectMenuInteraction,
+    ChatInputCommandInteraction,
+    Collection, MentionableSelectMenuInteraction,
+    MessageContextMenuCommandInteraction,
+    ModalSubmitInteraction, PrimaryEntryPointCommandInteraction, RoleSelectMenuInteraction,
+    SlashCommandBuilder, StringSelectMenuInteraction, UserContextMenuCommandInteraction, UserSelectMenuInteraction
+} from "discord.js"
 
 declare global {
     namespace NodeJS {
@@ -25,7 +34,7 @@ declare module "discord.js" {
 export interface SlashCommand {
     name: string,
     data: SlashCommandBuilder;
-    execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
+    execute: (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction<CacheType> | PrimaryEntryPointCommandInteraction<CacheType> | StringSelectMenuInteraction<"cached" | "raw" | undefined> | UserSelectMenuInteraction<"cached" | "raw" | undefined> | RoleSelectMenuInteraction<"cached" | "raw" | undefined> | MentionableSelectMenuInteraction<"cached" | "raw" | undefined> | ChannelSelectMenuInteraction<"cached" | "raw" | undefined> | ButtonInteraction<CacheType> | AutocompleteInteraction<CacheType> | ModalSubmitInteraction<CacheType>) => Promise<void>;
 }
 
 export { }
