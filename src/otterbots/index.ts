@@ -9,6 +9,7 @@ import {otterBots_clientReady} from "./event/clientReady";
 import {otterBots_setActivity} from "./utils/activity";
 import {otterBots_initEmoteReact} from "./event/emoteReact";
 import {otterbots_purgeCommand} from "./handlers/purgeCommand";
+import {otterbots_eventHandler} from "./handlers/eventHandler";
 
 dotenv.config()
 
@@ -37,6 +38,7 @@ export class Otterbots {
 
         // Start handlers
         this.commandHandler()
+        this.eventHandler()
 
         // Test des commandes
         this.testsCommands()
@@ -87,6 +89,11 @@ export class Otterbots {
     // Command handlers
     private async commandHandler(client: Client = this.client): Promise<void> {
         await otterBots_loadCommands(client)
+    }
+
+    // Event handler
+    private async eventHandler(client: Client = this.client): Promise<void> {
+         await otterbots_eventHandler(client)
     }
 
     // Test commands
