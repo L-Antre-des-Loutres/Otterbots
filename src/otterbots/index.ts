@@ -8,6 +8,7 @@ import {otterBots_interactionCreate} from "./event/commandInteraction";
 import {otterBots_clientReady} from "./event/clientReady";
 import {otterBots_setActivity} from "./utils/activity";
 import {otterBots_initEmoteReact} from "./event/emoteReact";
+import {otterbots_purgeCommand} from "./handlers/purgeCommand";
 
 dotenv.config()
 
@@ -51,11 +52,27 @@ export class Otterbots {
     public getClient() {
         return this.client
     }
-    
-    // Mettre une activité en cours
-    public setActivity(activityType: string = "playing", activity: string) {
+
+    /**
+     * Sets the activity status for the client.
+     * @param {string} [activityType="playing"] - The type of activity ("playing", "streaming", "listening", "watching", "competing".).
+     * @param {string} activity - The activity description to display.
+     * @return {void} This method does not return a value.
+     */
+    public setActivity(activityType: string = "playing", activity: string): void {
         otterBots_setActivity(activityType, activity, this.client)
     }
+
+    /**
+     * Purges all commands from the specified client instance to reset or clean up command configurations.
+     *
+     * @param {Client} [client=this.client] - The client instance from which commands will be purged. If no client is provided, the default is the `this.client` instance.
+     * @return {Promise<void>} - A promise that resolves when the command purging process has completed.
+     */
+     public async purgeCommand(client: Client = this.client): Promise<void> {
+        await otterbots_purgeCommand(client)
+    }
+
 
     // Event de démarrage du bot
     private async clientReady(client: Client = this.client): Promise<void> {
