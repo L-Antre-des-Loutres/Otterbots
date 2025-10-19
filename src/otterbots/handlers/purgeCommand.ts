@@ -10,7 +10,7 @@ import {otterlogs} from "../utils/otterlogs";
  * @return {Promise<void>} A promise that resolves when all commands have been successfully purged,
  * or logs an error if an issue occurs during the process.
  */
-export async function otterbots_purgeCommand(client: Client) {
+export async function otterbots_purgeCommand(client: Client): Promise<void> {
     client.on('clientReady', async () => {
         try {
             const guilds = await client.guilds.fetch();
