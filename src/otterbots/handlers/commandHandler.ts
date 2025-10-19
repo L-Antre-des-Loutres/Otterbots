@@ -12,9 +12,19 @@ import {otterlogs} from "../utils/otterlogs";
 export async function otterBots_loadCommands(client: Client): Promise<void> {
     const rootDir = path.join(__dirname, "..");
     const commandsPath = path.join(rootDir, "commands");
-    const commandFiles = getAllCommandFiles(commandsPath);
+    const additionalPath = path.join(rootDir, "../app/commands/");
 
-    // otterlogs.success("📂 Command files trouvés :" + commandFiles);
+    let commandFiles: string[] = [];
+
+    try {
+        commandFiles = [
+            ...getAllCommandFiles(commandsPath),
+            ...getAllCommandFiles(additionalPath)
+        ];
+    } catch (error) {
+        otterlogs.warn("📂 Dossier de commandes non trouvé, on continue..." + error);
+        return;
+    }
 
     client.slashCommands = new Collection<string, SlashCommand>();
     const commandsData = [];
@@ -29,19 +39,18 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
 
         // ⚠️ TypeScript type guard
         if (!isSlashCommand(command)) {
-            otterlogs.error("⚠️ Commande ignorée :" + file  + " -> " + command);
+            otterlogs.error("⚠️ Commande ignorée :" + file + " -> " + command);
             continue;
         }
 
         client.slashCommands.set(command.data.name, command);
         commandsData.push(command.data.toJSON());
     }
-
     // Send commands to Discord
-    const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN!);
+    const rest = new REST({version: "10"}).setToken(process.env.BOT_TOKEN!);
     await rest.put(
         Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-        { body: commandsData }
+        {body: commandsData}
     );
 
     otterlogs.success(`✅  ${commandsData.length} commande(s) enregistrée(s) sur Discord.`);
@@ -56,7 +65,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
  * @return {string[]} An array of file paths to all command files found within the directory.
  */
 function getAllCommandFiles(dir: string): string[] {
-    const files = fs.readdirSync(dir, { withFileTypes: true });
+    const files = fs.readdirSync(dir, {withFileTypes: true});
     const isBuild = __dirname.includes("build") || __dirname.includes("dist");
     const ext = isBuild ? ".js" : ".ts";
 
