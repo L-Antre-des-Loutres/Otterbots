@@ -1,6 +1,15 @@
 import {Client} from "discord.js";
 import {otterlogs} from "../utils/otterlogs";
 
+/**
+ * Handles the deletion of both guild-specific and global commands for the bot.
+ * This method listens to the 'clientReady' event and deletes all commands found in all guilds
+ * and any global commands associated with the bot application.
+ *
+ * @param {Client} client - The Discord client object used to interact with the Discord API.
+ * @return {Promise<void>} A promise that resolves when all commands have been successfully purged,
+ * or logs an error if an issue occurs during the process.
+ */
 export async function otterbots_purgeCommand(client: Client) {
     client.on('clientReady', async () => {
         try {

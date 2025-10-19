@@ -17,7 +17,6 @@ export const salonCategory: SalonCategory[] = [
     }
 ]
 
-
 /**
  * @type {SalonType[]} Array of salon configuration objects.
  * @property {string} name The name of the salon.
