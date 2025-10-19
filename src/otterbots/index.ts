@@ -4,9 +4,10 @@ import {getClient} from "../app/config/client";
 import {Client} from "discord.js";
 import {otterBots_loadCommands} from "./handlers/commandHandler";
 import {otterBots_initSalon} from "./utils/salon";
-import {otterBots_commandInteraction} from "./event/commandInteraction";
+import {otterBots_interactionCreate} from "./event/commandInteraction";
 import {otterBots_clientReady} from "./event/clientReady";
 import {otterBots_setActivity} from "./utils/activity";
+import {otterBots_initEmoteReact} from "./event/emoteReact";
 
 dotenv.config()
 
@@ -39,6 +40,9 @@ export class Otterbots {
         // Start salons
         this.initSalons()
 
+        // Start emote react
+        this.initEmoteReact()
+
     }
     
     // Mettre une activité en cours
@@ -53,7 +57,7 @@ export class Otterbots {
 
     // Event de gestion des commandes
     private async interactionCreate(client: Client = this.client): Promise<void> {
-        await otterBots_commandInteraction(client)
+        await otterBots_interactionCreate(client)
     }
 
     // Command handlers
@@ -64,6 +68,11 @@ export class Otterbots {
     // Initialisation des salons
     private async initSalons(client: Client = this.client): Promise<void> {
       await otterBots_initSalon(client)
+    }
+
+    // Initialize the emote react event
+    private async initEmoteReact(client: Client = this.client): Promise<void> {
+        await otterBots_initEmoteReact(client)
     }
 
 

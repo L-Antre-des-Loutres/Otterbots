@@ -7,7 +7,7 @@ import {otterlogs} from "../utils/otterlogs";
  * @param {Client} client - The Discord.js client instance used to handle events and manage interactions.
  * @return {void} This function does not return a value; it sets up event listeners for the client.
  */
-export async function otterBots_commandInteraction(client: Client): Promise<void> {
+export async function otterBots_interactionCreate(client: Client): Promise<void> {
 
     client.on('interactionCreate', async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
