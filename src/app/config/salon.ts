@@ -27,6 +27,7 @@ export const salonCategory: SalonCategory[] = [
 export const botSalon: SalonType[] = [
     // Here your list of salons
     {
+        alias: "general",
         name: "general",
         role_id: ROLE_ID,
         type: 0,

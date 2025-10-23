@@ -23,11 +23,11 @@ export async function otterbots_eventHandler(client: Client) {
                     client.on(evt.name, (...args) => evt.execute(...args));
                 }
             } catch (error) {
-                console.error(`Error loading event ${file}:`, error);
+                otterlogs.error(`Error loading event ${file}:` + error);
             }
         }
-        otterlogs.success(`✅  ${eventFiles.length} events successfully loaded!`);
+        otterlogs.success(`${eventFiles.length} events successfully loaded!`);
     } catch (error) {
-        console.error('Error loading events:', error);
+        otterlogs.error('Error loading events:' + error);
     }
 }
