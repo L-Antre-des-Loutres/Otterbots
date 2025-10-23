@@ -22,7 +22,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
             ...getAllCommandFiles(additionalPath)
         ];
     } catch (error) {
-        otterlogs.warn("📂 Commands folder not found, continuing..." + error);
+        otterlogs.warn("Commands folder not found, continuing..." + error);
         return;
     }
 
@@ -39,7 +39,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
 
         // ⚠️ TypeScript type guard
         if (!isSlashCommand(command)) {
-            otterlogs.error("⚠️ Command ignored:" + file + " -> " + command);
+            otterlogs.error("Command ignored:" + file + " -> " + command);
             continue;
         }
 
@@ -53,7 +53,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
         {body: commandsData}
     );
 
-    otterlogs.success(`✅  ${commandsData.length} command(s) registered on Discord.`);
+    otterlogs.success(`${commandsData.length} command(s) registered on Discord.`);
 }
 
 /**

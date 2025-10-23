@@ -6,6 +6,7 @@
  * @property {number} [category] - Salon category
  */
 export type SalonType = {
+    alias: string,
     name: string,
     role_id: string,
     type?: number;

@@ -1,30 +1,50 @@
 import { WebhookClient } from "discord.js";
+import pino from "pino";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
- * An object containing ANSI color codes for styled log messages.
- *
- * Each property represents a specific log style or color formatting
- * that can be used to enhance the visibility and differentiation
- * of log outputs in the console.
- *
- * Properties:
- * - `success` - ANSI color-coded string representing a success log label.
- * - `info` - ANSI color-coded string representing an info log label.
- * - `warn` - ANSI color-coded string representing a warning log label.
- * - `error` - ANSI color-coded string representing an error log label.
- * - `errorColor` - ANSI color code for error-related text styling.
- * - `importantColor` - ANSI color code for highlighting important text.
- * - `resetColor` - ANSI color code to reset text styling to default.
+ * A variable that handles the translation of time from one format, timezone, or representation to another.
+ * It may be used to convert time strings to different locales, adjust timezones, or reformat time for display purposes.
  */
-const logStyles = {
-    success: "\u001b[32m[success]\u001b[0m",
-    info: "\u001b[34m[info]\u001b[0m",
-    warn: "\u001b[33m[warn]\u001b[0m",
-    error: "\u001b[31m[error]\u001b[0m",
-    errorColor: "\u001b[31m",
-    importantColor: "\u001b[33m",
-    resetColor: "\u001b[0m",
-};
+let translateTime
+if (process.env.NODE_ENV == "dev") {
+    translateTime = "SYS:HH:MM:ss"
+} else {
+    translateTime = "SYS:dd-mm-yyyy HH:MM:ss"
+}
+
+/**
+ * Function to add a type field to the log object if the environment is set to development.
+ * @param type
+ */
+function typeLogger(type: string): { type?: string } {
+    if (process.env.NODE_ENV === "dev") {
+        return { type };
+    }
+    return {};
+}
+
+/**
+ * Logger instance configured using the Pino logging library.
+ *
+ * The logger is set up with a default log level of "info", which can be overridden
+ * by setting the environment variable LOG_LEVEL. It uses the 'pino-pretty' transport
+ * for log formatting, enabling colorized output and custom timestamp formatting.
+ * Specific fields such as "pid" and "hostname" are excluded from the log output.
+ */
+const logger = pino({
+    level: process.env.LOG_LEVEL || "info",
+    transport: {
+        target: 'pino-pretty',
+        options: {
+            colorize: true,
+            translateTime: translateTime,
+            ignore: "pid,hostname",
+        },
+    }
+})
 
 /**
  * Log functions with different styling and Discord webhook integration
@@ -37,27 +57,27 @@ const logStyles = {
  */
 export const otterlogs = {
     success: (message: string): void => {
-        console.log(logStyles.success, message);
+        logger.info(typeLogger("success"), message);
         sendLogMessage(message, false, "success");
     },
     log: (message: string): void => {
-        console.log(logStyles.info, message);
+        logger.info(typeLogger("log"), message);
         sendLogMessage(message, false, "log");
     },
     warn: (message: string): void => {
-        console.warn(logStyles.warn, message);
+        logger.warn(typeLogger("warn"), message);
         sendLogMessage(message, false, "warn");
     },
     error: (message: string): void => {
-        console.error(logStyles.error, message);
+        logger.error(typeLogger("error"), message);
         sendLogMessage(message, true, "error");
     },
     important: (message: string): void => {
-        console.log(`${logStyles.importantColor}${message}${logStyles.resetColor}`);
+        logger.info(typeLogger("important"), message);
         sendLogMessage(message, false, "important");
     },
     silentlog: (message: string): void => {
-        console.log(message);
+        logger.debug(message);
     }
 };
 
@@ -71,7 +91,7 @@ function sendLogMessage(message: string, error: boolean, type?: string): void {
     const webhookURL = error ? process.env.ERROR_WEBHOOK_URL : process.env.GLOBAL_WEBHOOK_URL;
 
     if (!webhookURL) {
-        console.error(logStyles.error, "Webhook URL non définie dans le fichier .env !");
+        otterlogs.error("Webhook URL non définie dans le fichier .env !");
         return;
     }
 
@@ -81,6 +101,6 @@ function sendLogMessage(message: string, error: boolean, type?: string): void {
         content: message,
         username: `${process.env.BOT_NAME} - ${type?.toUpperCase()}`,
     }).catch((err) => {
-        console.error(logStyles.error, "Erreur lors de l'envoi du message via webhook:", err);
+        otterlogs.error("Erreur lors de l'envoi du message via webhook:" + err);
     });
 }

@@ -12,15 +12,23 @@ import {
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
+            NODE_ENV: "dev" | "prod"
             BOT_TOKEN: string
             DISCORD_CLIENT_ID: string
             DISCORD_GUILD_ID: string
             GIT_REPOSITORY: string
             PROJECT_LOGO: string
             BOT_NAME: string
+            BOT_COLOR: string
+            VERSION: string
 
+            ENABLE_DISCORD_SUCCESS: "true" | "false"
+            ENABLE_DISCORD_LOGS: "true" | "false"
+            ENABLE_DISCORD_WARNS: "true" | "false"
+            ENABLE_DISCORD_ERRORS: "true" | "false"
 
-
+            GLOBAL_WEBHOOK_URL: string
+            ERROR_WEBHOOK_URL: string
         }
     }
 }
