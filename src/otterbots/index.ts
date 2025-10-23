@@ -75,7 +75,6 @@ export class Otterbots {
         await otterbots_purgeCommand(client)
     }
 
-
     // Event de démarrage du bot
     private async clientReady(client: Client = this.client): Promise<void> {
         await otterBots_clientReady(client)

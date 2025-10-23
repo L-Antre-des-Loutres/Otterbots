@@ -76,12 +76,22 @@ export const otterlogs = {
         logger.info(typeLogger("important"), message);
         sendLogMessage(message, false, "important");
     },
+    debug: (message: string): void => {
+        if (process.env.NODE_ENV === "dev") {
+            logger.info(typeLogger("debug"), message);
+        }
+    },
     silentlog: (message: string): void => {
         logger.debug(message);
     }
 };
 
-// Fonction pour envoyer un message dans le salon de logs via webhook
+/**
+ * Sends a log message to Discord using webhooks based on the message type
+ * @param message The message content to send
+ * @param error Whether to use the error webhook URL instead of the global one
+ * @param type The type of log message (success, log, warn, error, important)
+ */
 function sendLogMessage(message: string, error: boolean, type?: string): void {
     if (process.env.ENABLE_DISCORD_SUCCESS === "false" && type === "success") return;
     if (process.env.ENABLE_DISCORD_LOGS === "false" && type === "log") return;
