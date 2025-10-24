@@ -1,5 +1,5 @@
 import {Client} from "discord.js";
-import {otterguard_Embed} from "./embed";
+import {otterguard_Embed} from "../embed";
 
 /**
  * Monitors messages in a Discord server and detects potential spam activity. If a user exceeds certain thresholds for message frequency and channel activity,

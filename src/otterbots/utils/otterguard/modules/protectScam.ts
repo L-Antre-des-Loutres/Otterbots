@@ -1,5 +1,5 @@
 import {Client} from "discord.js";
-import {otterguard_Embed} from "./embed";
+import {otterguard_Embed} from "../embed";
 
 /**
  * Monitors and removes potentially malicious or scam messages within a Discord server.

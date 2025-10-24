@@ -1,9 +1,9 @@
 import {otterlogs} from "../otterlogs";
 import {Client} from "discord.js";
-import {otterguard_protectLink} from "./protectLink";
+import {otterguard_protectLink} from "./modules/protectLink";
 import {otterguardConfig} from "../../../app/config/otterguardConfig";
-import {otterguard_protectScam} from "./protectScam";
-import {otterguard_protectSpam} from "./protectSpam";
+import {otterguard_protectScam} from "./modules/protectScam";
+import {otterguard_protectSpam} from "./modules/protectSpam";
 
 /**
  * Initializes and configures the Otterguard protection mechanisms for the client.
