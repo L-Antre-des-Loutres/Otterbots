@@ -25,7 +25,12 @@ export async function otterguard_protectLink(client: Client) {
             // Check if the link is http://
             if (message.content.includes('http://')) {
                 try {
-                    await message.delete();
+
+                    try {
+                        await message.delete();
+                    } catch {
+                        return;
+                    }
 
                     if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                         titleContent = `Lien HTTP non autorisé.`
@@ -49,7 +54,12 @@ export async function otterguard_protectLink(client: Client) {
             // Check if the link is a discord invite
             if (message.content.includes('discord.gg/')) {
                 try {
-                    await message.delete();
+
+                    try {
+                        await message.delete();
+                    } catch {
+                        return;
+                    }
 
                     if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                         titleContent = `Envoi d'invitation Discord interdite.`
@@ -76,7 +86,12 @@ export async function otterguard_protectLink(client: Client) {
                     const link = message.content.match(/https?:\/\/[^\s]*/)?.[0] || '';
                     const domainFound = authorizedDomains.some(domain => link.includes(domain));
                     if (!domainFound) {
-                        await message.delete();
+
+                        try {
+                            await message.delete();
+                        } catch {
+                            return;
+                        }
 
                         // Send a message to the user with the link and the reason for the deletion
                         if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {

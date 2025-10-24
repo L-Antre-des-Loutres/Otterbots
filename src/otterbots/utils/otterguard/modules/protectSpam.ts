@@ -41,8 +41,13 @@ export async function otterguard_protectSpam(client: Client) {
                 const member = message.guild?.members.cache.get(userId);
                 if (member) {
                     await member.timeout(60000, 'Spam detected across multiple channels');
-                    messageCache.delete(userId);
-                    channelCache.delete(userId);
+
+                    try {
+                        messageCache.delete(userId);
+                        channelCache.delete(userId);
+                    } catch {
+                        return
+                    }
 
                     // Send a message to the user with the link and the reason for the deletion
                     let titleContent, messageContent

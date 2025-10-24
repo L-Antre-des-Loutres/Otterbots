@@ -46,15 +46,19 @@ export async function otterguard_protectScam(client: Client) {
 
         if (isScam) {
             try {
-                await message.delete();
-                
+                try {
+                    await message.delete();
+                } catch {
+                    return;
+                }
+
                 let titleContent, messageContent
                 if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                     titleContent = `Arnaque potentielle détectée !`
-                    messageContent= `${message.author}, votre message a été supprimé car il a été détecté comme potentiellement malveillant.`
+                    messageContent = `${message.author}, votre message a été supprimé car il a été détecté comme potentiellement malveillant.`
                 } else {
                     titleContent = `Potential scam detected!`
-                    messageContent= `${message.author}, your message has been deleted as it was detected as potentially malicious.`
+                    messageContent = `${message.author}, your message has been deleted as it was detected as potentially malicious.`
                 }
 
                 // Send the message to the user
