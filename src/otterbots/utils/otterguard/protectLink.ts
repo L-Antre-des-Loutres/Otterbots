@@ -27,10 +27,10 @@ export async function otterguard_protectLink(client: Client) {
 
             if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                 titleContent= `Lien HTTP non autorisé.`
-                messageContent = `Les liens http:// ne sont pas autorisés sur le serveur ${process.env.DISCORD_NAME}.`
+                messageContent = `${message.author}, les liens http:// ne sont pas autorisés sur le serveur ${process.env.DISCORD_NAME}.`
             } else {
                 titleContent= `HTTP link not authorized.`
-                messageContent = `HTTP links are not allowed on the server ${process.env.DISCORD_NAME}.`
+                messageContent = `${message.author}, HTTP links are not allowed on the server ${process.env.DISCORD_NAME}.`
             }
 
             // Send the message to the user
@@ -47,10 +47,10 @@ export async function otterguard_protectLink(client: Client) {
 
             if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                 titleContent = `Envoi d'invitation Discord interdite.`
-                messageContent = `L'envoi d'invitation vers d'autres serveurs Discord est interdit sur le serveur ${process.env.DISCORD_NAME}. Merci de contacter un administrateur pour plus d'informations.`
+                messageContent = `${message.author}, l'envoi d'invitation vers d'autres serveurs Discord est interdit sur le serveur ${process.env.DISCORD_NAME}. Merci de contacter un administrateur pour plus d'informations.`
             } else {
                 titleContent = `Discord invite sending prohibited.`
-                messageContent = `Sending invitations to other Discord servers is prohibited on the server ${process.env.DISCORD_NAME}. Please contact an administrator for more information.`
+                messageContent = `${message.author}, sending invitations to other Discord servers is prohibited on the server ${process.env.DISCORD_NAME}. Please contact an administrator for more information.`
             }
 
             // Send the message to the user
@@ -63,7 +63,7 @@ export async function otterguard_protectLink(client: Client) {
 
         // Check if the link has an authorized domain
         if (message.content.includes('https://')) {
-            const link = message.content.split(' ')[0];
+            const link = message.content.match(/https?:\/\/[^\s]*/)?.[0] || '';
             const domainFound = authorizedDomains.some(domain => link.includes(domain));
             if (!domainFound) {
                 await message.delete();
@@ -71,10 +71,10 @@ export async function otterguard_protectLink(client: Client) {
                 // Send a message to the user with the link and the reason for the deletion
                 if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
                     titleContent = `Ce site n'est pas autorisé.`
-                    messageContent = `L'url ${link} n'est pas autorisé sur le serveur ${process.env.DISCORD_NAME}, si cela est une erreur merci de contacter un administrateur.`
+                    messageContent = `${message.author}, l'url ${link} n'est pas autorisé sur le serveur ${process.env.DISCORD_NAME}, si cela est une erreur merci de contacter un administrateur.`
                 } else {
                     titleContent = `This site is not authorized.`
-                    messageContent = `The url ${link} is not authorized on the server ${process.env.DISCORD_NAME}, if this is an error please contact an administrator.`
+                    messageContent = `${message.author} the url ${link} is not authorized on the server ${process.env.DISCORD_NAME}, if this is an error please contact an administrator.`
                 }
 
                 // Send the message to the user

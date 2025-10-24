@@ -6,7 +6,8 @@
  * @property {boolean} protectLink - Indicates whether link protection is enabled or disabled.
  */
 export const otterguardConfig: { [key: string]: boolean } = {
-    protectLink: true
+    protectLink: true,
+    protectScam: true,
 };
 
 /**
@@ -30,5 +31,13 @@ export const authorizedDomains = [
     "https://youtu.be",
     "https://tenor.com/",
     "https://cdn.discordapp.com",
-    "https://minecraft.fr"
+    "https://minecraft.fr",
+    "https://www.minecraft.fr",
+    "https://www.minecraft.net",
+    "https://tracker.gg",
+    "https://www.tracker.gg",
+    "https://www.pokebip.com",
+    "https://pokebip.com",
+    "https://store.steampowered.com",
+    "https://genshin.hoyoverse.com"
 ];

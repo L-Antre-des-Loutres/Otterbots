@@ -2,6 +2,7 @@ import {otterlogs} from "../otterlogs";
 import {Client} from "discord.js";
 import {otterguard_protectLink} from "./protectLink";
 import {otterguardConfig} from "../../../app/config/otterguardConfig";
+import {otterguard_protectScam} from "./protectScam";
 
 /**
  * Initializes and configures the Otterguard protection mechanisms for the client.
@@ -13,7 +14,11 @@ export async function otterbots_otterguard(client: Client): Promise<void> {
     otterlogs.success("Otterguard is working!")
     if (otterguardConfig.protectLink) {
         await otterguard_protectLink(client)
-        otterlogs.debug("Link protection is enabled!")
+        otterlogs.debug("Otterguard: Link protection is enabled!")
+    }
+    if (otterguardConfig.protectScam) {
+        await otterguard_protectScam(client)
+        otterlogs.debug("Otterguard: Scam protection is enabled!")
     }
 
 }
