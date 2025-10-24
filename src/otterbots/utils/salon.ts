@@ -1,6 +1,7 @@
 import {Client, Colors, Guild, PermissionFlagsBits, ChannelType} from "discord.js";
 import {otterlogs} from "./otterlogs";
 import {botSalon, salonCategory} from "../../app/config/salon";
+import fs from "fs";
 
 /**
  * Creates a set of channels and a category with specific permissions in a Discord server.
@@ -21,7 +22,7 @@ export type SalonType = {
  * @return {Promise<void>} A promise that resolves once the channels and roles are created or the operation concludes. If an error occurs, it logs the error and does not throw it further.
  */
 export async function otterBots_initSalon(client: Client): Promise<void> {
-    client.on('clientReady', async () : Promise<void> => {
+    client.on('clientReady', async (): Promise<void> => {
         try {
             const channelNames: SalonType[] = [];
             // Noms des salons à créer
@@ -92,13 +93,13 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                                 },
                             ],
                         });
-                        otterlogs.success(`✅  Catégorie "${category.name}" créée avec les permissions !`);
+                        otterlogs.success(`Category "${category.name}" created with permissions!`);
                     }
 
                     // Crée les salons de cette catégorie
                     for (const salon of botSalon) {
-                        if (salon.category === category.id && !channelsDiscord.includes(salon.name)) {
-                            await guild.channels.create({
+                        if (!channelsDiscord.includes(salon.name)) {
+                            const newChannel = await guild.channels.create({
                                 name: salon.name,
                                 type: ChannelType.GuildText,
                                 parent: categoryChannel.id,
@@ -113,16 +114,50 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                                     },
                                 ],
                             });
-                            otterlogs.success(`✅  Salon "${salon.name}" créé !`);
+                            salon.channelId = newChannel.id;
+                            otterlogs.success(`Channel "${salon.name}" created with ID: ${newChannel.id}!`);
+                            let existingChannels = {};
+                            try {
+                                existingChannels = JSON.parse(fs.readFileSync('channels.json', 'utf8'));
+                            } catch (error) {
+                                existingChannels = {};
+                                otterlogs.error(`Error reading channels.json: ${error}`);
+                            }
+                            const channelData = {
+                                ...existingChannels,
+                                [salon.alias]: {name: salon.name, id: newChannel.id}
+                            };
+                            fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
+                            otterlogs.debug("Channels updated in channels.json");
                         }
                     }
                 }
             } catch (error) {
-                otterlogs.error(`❌  Erreur lors de la création des salons : ${error}`);
+                otterlogs.error(`Error while creating channels: ${error}`);
             }
         } catch (error) {
-            otterlogs.error(`❌  Impossible d'exécuter l'événement OnReady : ${error}`);
-            otterlogs.error("Erreur lors de l'événement OnReady" + `👤 tag : ${client.user?.username} (ID: ${client.user?.id}) \n ${error}`);
+            otterlogs.error(`Unable to execute OnReady event: ${error}`);
         }
     });
+}
+
+/**
+ * Retrieves the salon ID from channels.json using a given alias.
+ * Returns empty string if alias not found or error reading file.
+ *
+ * @param {string} alias - The alias identifier of the salon to look up
+ * @return {Promise<string>} The channel ID if found, empty string otherwise
+ */
+export async function getSalonIdByAlias(alias: string): Promise<string> {
+    try {
+        const channels = JSON.parse(fs.readFileSync('channels.json', 'utf8'));
+        if (channels[alias] && channels[alias].id) {
+            return channels[alias].id;
+        }
+        otterlogs.error(`Salon with alias "${alias}" not found in channels.json`);
+        return '';
+    } catch (error) {
+        otterlogs.error(`Error reading channel ID: ${error}`);
+        return '';
+    }
 }

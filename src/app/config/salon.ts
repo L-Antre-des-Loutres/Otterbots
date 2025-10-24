@@ -12,7 +12,7 @@ export const salonCategory: SalonCategory[] = [
     // Here your list of categories
     {
         id: 1,
-        name: "Test2",
+        name: "ahaha",
         role_id: ROLE_ID
     }
 ]
@@ -27,10 +27,10 @@ export const salonCategory: SalonCategory[] = [
 export const botSalon: SalonType[] = [
     // Here your list of salons
     {
-        alias: "general",
-        name: "general",
+        alias: "test-1",
+        name: "test-salon-1",
         role_id: ROLE_ID,
         type: 0,
-        category: 2
+        category: 1
     },
 ];
