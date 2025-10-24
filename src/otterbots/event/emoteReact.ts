@@ -1,5 +1,6 @@
 import {Client} from "discord.js";
 import {otterbots_reactions} from "../../app/config/emojiReact";
+import {otterlogs} from "../utils/otterlogs";
 
 /**
  * Initializes the event listener to automatically react to messages based on predefined conditions.
@@ -20,7 +21,7 @@ export async function otterBots_initEmoteReact(client: Client): Promise<void> {
                     await message.react(emoji);
                 }
             } catch (err) {
-                console.error(`Impossible de réagir avec ${emoji}:`, err);
+                otterlogs.error(`Impossible de réagir avec ${emoji}: `+ err);
             }
         }
     })

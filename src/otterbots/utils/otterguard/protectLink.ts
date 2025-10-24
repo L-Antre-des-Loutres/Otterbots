@@ -1,5 +1,6 @@
 import {Client} from "discord.js";
 import {authorizedDomains} from "../../../app/config/otterguardConfig";
+import {otterguard_Embed} from "./embed";
 
 /**
  * Monitors and handles messages in a Discord server to enforce restrictions on URLs and links. It performs checks to delete messages
@@ -12,7 +13,7 @@ import {authorizedDomains} from "../../../app/config/otterguardConfig";
 export async function otterguard_protectLink(client: Client) {
     client.on('messageCreate', async (message) => {
 
-        let messageContent
+        let messageContent, titleContent
 
         // Check that the message is not from a bot
         if (message.author.bot) return;
@@ -25,13 +26,17 @@ export async function otterguard_protectLink(client: Client) {
             await message.delete();
 
             if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
+                titleContent= `Lien HTTP non autorisé.`
                 messageContent = `Les liens http:// ne sont pas autorisés sur le serveur ${process.env.DISCORD_NAME}.`
             } else {
+                titleContent= `HTTP link not authorized.`
                 messageContent = `HTTP links are not allowed on the server ${process.env.DISCORD_NAME}.`
             }
 
             // Send the message to the user
-            await message.author.send(messageContent);
+            await message.author.send({
+                embeds: [otterguard_Embed(titleContent, messageContent)]
+            });
 
             return
         }
@@ -41,13 +46,17 @@ export async function otterguard_protectLink(client: Client) {
             await message.delete();
 
             if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
+                titleContent = `Envoi d'invitation Discord interdite.`
                 messageContent = `L'envoi d'invitation vers d'autres serveurs Discord est interdit sur le serveur ${process.env.DISCORD_NAME}. Merci de contacter un administrateur pour plus d'informations.`
             } else {
+                titleContent = `Discord invite sending prohibited.`
                 messageContent = `Sending invitations to other Discord servers is prohibited on the server ${process.env.DISCORD_NAME}. Please contact an administrator for more information.`
             }
 
             // Send the message to the user
-            await message.author.send(messageContent);
+            await message.author.send({
+                embeds: [otterguard_Embed(titleContent, messageContent)]
+            });
 
             return
         }
@@ -61,13 +70,17 @@ export async function otterguard_protectLink(client: Client) {
 
                 // Send a message to the user with the link and the reason for the deletion
                 if (process.env.BOT_LANGUAGE.toLowerCase() == "fr") {
+                    titleContent = `Ce site n'est pas autorisé.`
                     messageContent = `L'url ${link} n'est pas autorisé sur le serveur ${process.env.DISCORD_NAME}, si cela est une erreur merci de contacter un administrateur.`
                 } else {
+                    titleContent = `This site is not authorized.`
                     messageContent = `The url ${link} is not authorized on the server ${process.env.DISCORD_NAME}, if this is an error please contact an administrator.`
                 }
 
                 // Send the message to the user
-                await message.author.send(messageContent)
+                await message.author.send({
+                    embeds: [otterguard_Embed(titleContent, messageContent)]
+                });
 
                 return
             }
