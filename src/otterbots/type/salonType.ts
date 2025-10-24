@@ -11,6 +11,7 @@ export type SalonType = {
     role_id: string,
     type?: number;
     category?: number;
+    channelId?: string;
 }
 
 /**

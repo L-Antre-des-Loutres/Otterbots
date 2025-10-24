@@ -10,6 +10,7 @@ import {otterBots_setActivity} from "./utils/activity";
 import {otterBots_initEmoteReact} from "./event/emoteReact";
 import {otterbots_purgeCommand} from "./handlers/purgeCommand";
 import {otterbots_eventHandler} from "./handlers/eventHandler";
+import {otterbots_otterguard} from "./utils/otterguard/otterguard";
 
 dotenv.config()
 
@@ -40,7 +41,7 @@ export class Otterbots {
         this.commandHandler()
         this.eventHandler()
 
-        // Test des commandes
+        // Command test
         this.testsCommands()
 
         // Start salons
@@ -49,6 +50,8 @@ export class Otterbots {
         // Start emote react
         this.initEmoteReact()
 
+        // Start Otterguard
+        this.otterguard()
     }
 
     public getClient() {
@@ -75,12 +78,17 @@ export class Otterbots {
         await otterbots_purgeCommand(client)
     }
 
-    // Event de démarrage du bot
+    // Bot startup event
     private async clientReady(client: Client = this.client): Promise<void> {
         await otterBots_clientReady(client)
     }
 
-    // Event de gestion des commandes
+    // Start Otterguard
+    private async otterguard(client: Client = this.client): Promise<void> {
+        await otterbots_otterguard(client)
+    }
+
+    // Command handling event
     private async interactionCreate(client: Client = this.client): Promise<void> {
         await otterBots_interactionCreate(client)
     }
