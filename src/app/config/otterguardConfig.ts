@@ -8,6 +8,7 @@
 export const otterguardConfig: { [key: string]: boolean } = {
     protectLink: true,
     protectScam: true,
+    protectSpam: true,
 };
 
 /**

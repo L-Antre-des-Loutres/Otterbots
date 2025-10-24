@@ -3,6 +3,7 @@ import {Client} from "discord.js";
 import {otterguard_protectLink} from "./protectLink";
 import {otterguardConfig} from "../../../app/config/otterguardConfig";
 import {otterguard_protectScam} from "./protectScam";
+import {otterguard_protectSpam} from "./protectSpam";
 
 /**
  * Initializes and configures the Otterguard protection mechanisms for the client.
@@ -19,6 +20,10 @@ export async function otterbots_otterguard(client: Client): Promise<void> {
     if (otterguardConfig.protectScam) {
         await otterguard_protectScam(client)
         otterlogs.debug("Otterguard: Scam protection is enabled!")
+    }
+    if (otterguardConfig.protectSpam) {
+        await otterguard_protectSpam(client)
+        otterlogs.debug("Otterguard: Spam protection is enabled!")
     }
 
 }
