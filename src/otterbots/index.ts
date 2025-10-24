@@ -49,9 +49,6 @@ export class Otterbots {
 
         // Start emote react
         this.initEmoteReact()
-
-        // Start Otterguard
-        this.otterguard()
     }
 
     public getClient() {
@@ -78,14 +75,19 @@ export class Otterbots {
         await otterbots_purgeCommand(client)
     }
 
+    /**
+     * Initializes and starts the OtterGuard service using the provided client instance.
+     *
+     * @param {Client} [client=this.client] - The client instance to be used for the OtterGuard service. If not provided, defaults to the class-level client.
+     * @return {Promise<void>} A promise that resolves when the OtterGuard service has started successfully.
+     */
+    public startOtterGuard(client: Client = this.client): void {
+         otterbots_otterguard(client)
+    }
+
     // Bot startup event
     private async clientReady(client: Client = this.client): Promise<void> {
         await otterBots_clientReady(client)
-    }
-
-    // Start Otterguard
-    private async otterguard(client: Client = this.client): Promise<void> {
-        await otterbots_otterguard(client)
     }
 
     // Command handling event

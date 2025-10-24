@@ -11,18 +11,18 @@ import {otterguard_protectSpam} from "./modules/protectSpam";
  * @param {Client} client - The client instance that Otterguard is managing.
  * @return {Promise<void>} A promise that resolves once Otterguard has been successfully initialized and, if enabled, link protection has been configured.
  */
-export async function otterbots_otterguard(client: Client): Promise<void> {
+export function otterbots_otterguard(client: Client): void {
     otterlogs.success("Otterguard is working!")
     if (otterguardConfig.protectLink) {
-        await otterguard_protectLink(client)
+        otterguard_protectLink(client)
         otterlogs.debug("Otterguard: Link protection is enabled!")
     }
     if (otterguardConfig.protectScam) {
-        await otterguard_protectScam(client)
+        otterguard_protectScam(client)
         otterlogs.debug("Otterguard: Scam protection is enabled!")
     }
     if (otterguardConfig.protectSpam) {
-        await otterguard_protectSpam(client)
+        otterguard_protectSpam(client)
         otterlogs.debug("Otterguard: Spam protection is enabled!")
     }
 

@@ -6,3 +6,4 @@ const bot = new Otterbots();
 // On lance le bot
 bot.start();
 bot.setActivity("custom","Hello Otters !")
+bot.startOtterGuard()
