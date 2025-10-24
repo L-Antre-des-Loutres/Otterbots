@@ -5,7 +5,7 @@ import {Message} from "discord.js";
  * Defines message conditions and their corresponding emojis.
  * @type {Array<{condition: (msg: Message) => boolean, emoji: string}>}
  */
-export const otterbots_reactions = [
+export const otterbots_reactions: Array<{ condition: (msg: Message) => boolean; emoji: string; }> = [
     {
         condition: (msg: Message) => {
             // Condition to check if the message contains "otter" or "loutre"

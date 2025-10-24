@@ -13,7 +13,7 @@ export const otterguardConfig: { [key: string]: boolean } = {
 /**
  * List of authorized domains for link protection.
  */
-export const authorizedDomains = [
+export const authorizedDomains: string[] = [
     "https://discord.com",
     "https://discord.gg",
     "https://youtube.com",
