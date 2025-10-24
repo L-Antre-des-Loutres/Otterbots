@@ -21,4 +21,14 @@ export const authorizedDomains = [
     "https://twitch.tv",
     "https://pokekalos.fr",
     "https://www.pokekalos.fr",
+    "https://antredesloutres.fr",
+    "https://hoyo.link",
+    "https://sg-public-api.hoyoverse.com",
+    "https://keqingmains.com",
+    "https://akasha.cv",
+    "https://x.com",
+    "https://youtu.be",
+    "https://tenor.com/",
+    "https://cdn.discordapp.com",
+    "https://minecraft.fr"
 ];
