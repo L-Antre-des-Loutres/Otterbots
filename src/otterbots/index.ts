@@ -11,6 +11,7 @@ import {otterBots_initEmoteReact} from "./event/emoteReact";
 import {otterbots_purgeCommand} from "./handlers/purgeCommand";
 import {otterbots_eventHandler} from "./handlers/eventHandler";
 import {otterbots_otterguard} from "./utils/otterguard/otterguard";
+import {otterbots_initTask} from "./utils/task";
 
 dotenv.config()
 
@@ -83,6 +84,15 @@ export class Otterbots {
      */
     public startOtterGuard(client: Client = this.client): void {
          otterbots_otterguard(client)
+    }
+
+    /**
+     * Initializes a task by invoking the required internal setup function.
+     *
+     * @return {void} Does not return a value.
+     */
+    public initTask(): void {
+        otterbots_initTask()
     }
 
     // Bot startup event
