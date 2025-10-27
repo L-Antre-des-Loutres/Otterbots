@@ -11,12 +11,21 @@ export class Otterlyapi {
     }
 
     /**
+     * Returns the path to the JSON file containing route configurations.
+     * @private
+     */
+    private static getJsonFilePath(): string {
+        return new Otterlyapi().jsonFilePath;
+    }
+
+    /**
      * Initializes the application by registering the routes defined in a JSON file.
      * Logs a success message if the registration is successful or an error message if it fails.
      *
      * @return {Promise<void>} A promise that resolves when the initialization process completes.
      */
     public async init(): Promise<void> {
+
         // Register routes in the JSON file
         try {
             await this.registerRoutesInJsonFile();
@@ -25,6 +34,7 @@ export class Otterlyapi {
             otterlogs.error("Otterlyapi: Failed to register routes: " + error);
             return;
         }
+
     }
 
     /**
@@ -36,7 +46,9 @@ export class Otterlyapi {
      * @return {Promise<boolean>} A promise that resolves to true if the operation succeeds, or false if an error occurs.
      */
     private async registerRoutesInJsonFile(): Promise<boolean> {
+
         const api = process.env.API_ROUTES_URL;
+
         try {
             const response = await axios.get(api);
             const filePath = this.jsonFilePath;
@@ -50,6 +62,7 @@ export class Otterlyapi {
             console.error('Error fetching routes:', error);
             return false;
         }
+
     }
 
     /**
@@ -61,8 +74,10 @@ export class Otterlyapi {
      * @returns The route information (RoutesType) if found, undefined otherwise
      * @throws Logs an error if there are issues reading/parsing the JSON file
      */
-    public getRoutesInfosByAlias(alias: string): RoutesType | undefined {
-        const filePath = this.jsonFilePath;
+    public static getRoutesInfosByAlias(alias: string): RoutesType | undefined {
+
+        const filePath = Otterlyapi.getJsonFilePath()
+
         try {
             const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
             const routes: RoutesType[] = Array.isArray(jsonData.data)
@@ -74,5 +89,44 @@ export class Otterlyapi {
             otterlogs.error('Error reading routes file: ' + error);
             return undefined;
         }
+
+    }
+
+    /**
+     * Retrieves data associated with the given alias.
+     *
+     * The method fetches a route corresponding to the alias from the configuration,
+     * and performs an HTTP GET request to retrieve the data. If no data is found or an error occurs,
+     * it returns undefined.
+     *
+     * @param {string} alias - The alias corresponding to the desired route.
+     * @param param - Optional parameter to be appended to the route URL.
+     * @return {Promise<T | undefined>} A promise that resolves to the fetched data of type `T` if successful,
+     * or undefined if the alias is invalid or an error occurs.
+     */
+    public static async getDataByAlias<T>(alias: string, param?: string): Promise<T | undefined> {
+
+        // Check if the alias is valid
+        if (!alias) {
+            otterlogs.error('Invalid alias provided for fetching data');
+            return undefined;
+        }
+
+        // Fetch the route information from the JSON file
+        const routeInfo = Otterlyapi.getRoutesInfosByAlias(alias);
+        if (!routeInfo) {
+            otterlogs.error(`No route found for alias: ${alias}`);
+            return undefined;
+        }
+
+        // Perform the HTTP GET request to fetch the data
+        try {
+            const response = await axios.get(routeInfo.route.replace(/:\w+$/, param || ''));
+            return response.data.data as T;
+        } catch (error) {
+            otterlogs.error(`Error fetching data for alias ${alias}: ${error}`);
+            return undefined;
+        }
+
     }
 }
