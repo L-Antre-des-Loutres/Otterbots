@@ -30,6 +30,7 @@ export class Otterlyapi {
         try {
             await this.registerRoutesInJsonFile();
             otterlogs.success("Otterlyapi: Routes registered successfully!");
+            await Otterlyapi.postDataByAlias<undefined>("otr-serveurs-start", {id: 1} as unknown as undefined);
         } catch (error) {
             otterlogs.error("Otterlyapi: Failed to register routes: " + error);
             return;
@@ -125,6 +126,60 @@ export class Otterlyapi {
             return response.data.data as T;
         } catch (error) {
             otterlogs.error(`Error fetching data for alias ${alias}: ${error}`);
+            return undefined;
+        }
+
+    }
+
+    /**
+     * Sends an HTTP POST request to a route associated with the given alias and fetches the corresponding data.
+     *
+     * @param {string} alias - The alias used to identify the API route.
+     * @param {undefined} data - The payload data to be sent in the POST request. Currently, only undefined is supported as the input.
+     * @return {Promise<T | undefined>} - A promise resolving to the fetched data of type T, or undefined in case of failure or invalid input.
+     */
+    public static async postDataByAlias<T>(alias: string, data: T): Promise<T | undefined> {
+
+        // Check if the alias is valid
+        if (!alias) {
+            otterlogs.error('Invalid alias provided for fetching data');
+            return undefined;
+        }
+
+        // Fetch the route information from the JSON file
+        const routeInfo = Otterlyapi.getRoutesInfosByAlias(alias);
+        if (!routeInfo) {
+            otterlogs.error(`No route found for alias: ${alias}`);
+            return undefined;
+        }
+
+        // Check if API token is available
+        if (!process.env.API_TOKEN) {
+            otterlogs.error('API token is not configured');
+            return undefined;
+        }
+
+        // Perform the HTTP POST request to fetch the data
+        try {
+            const response = await axios.post(routeInfo.route, data, {
+                headers: {
+                    Authorization: `${process.env.API_TOKEN}`
+                },
+                validateStatus: (status) => status >= 200 && status < 300
+            });
+
+            if (!response.data || !response.data.data) {
+                otterlogs.error(`Invalid response data structure for alias ${alias}`);
+                return undefined;
+            }
+
+            return response.data.data as T;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                otterlogs.error(`HTTP error for alias ${alias}: ${error.message}${error.response?.data ? ` - ${JSON.stringify(error.response.data)}` : ''}`);
+            } else {
+                otterlogs.error(`Unexpected error for alias ${alias}: ${error}`);
+            }
             return undefined;
         }
 
