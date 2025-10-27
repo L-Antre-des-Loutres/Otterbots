@@ -30,7 +30,6 @@ export class Otterlyapi {
         try {
             await this.registerRoutesInJsonFile();
             otterlogs.success("Otterlyapi: Routes registered successfully!");
-            await Otterlyapi.postDataByAlias<undefined>("otr-serveurs-start", {id: 1} as unknown as undefined);
         } catch (error) {
             otterlogs.error("Otterlyapi: Failed to register routes: " + error);
             return;
