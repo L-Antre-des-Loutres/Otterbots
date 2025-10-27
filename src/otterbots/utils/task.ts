@@ -12,10 +12,12 @@ import {otterlogs} from "./otterlogs";
  * @return {void} This function does not return a value.
  */
 export function otterbots_initTask(): void {
+
     if (tasks.length === 0) {
         otterlogs.debug('No tasks found in config/task.ts');
         return;
     }
+
     try {
         let successCount = 0;
         let failCount = 0;
@@ -31,7 +33,9 @@ export function otterbots_initTask(): void {
                 failNames.push(task.name);
             }
         });
+
         otterlogs.success(`${successCount} tasks initialized successfully (${successNames.join(', ')}) and ${failCount} tasks failed (${failNames.join(', ')})`)
+
     } catch (error) {
         otterlogs.error(`Error initializing tasks: ${error}`);
     }
@@ -63,6 +67,7 @@ function taskSchedule(name: string, time: string, task: () => Promise<void>, per
             }
         });
         return true;
+
     } catch (error) {
         otterlogs.error(`Error scheduling task ${name}: ${error}`);
         return false;

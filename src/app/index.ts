@@ -8,5 +8,5 @@ bot.start();
 bot.setActivity("custom", "Hello Otters !")
 bot.startOtterGuard()
 
-// Start tasks
+// Start tasks (if you not use tasks, you can delete this)
 bot.initTask()
