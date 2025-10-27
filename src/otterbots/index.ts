@@ -12,6 +12,7 @@ import {otterbots_purgeCommand} from "./handlers/purgeCommand";
 import {otterbots_eventHandler} from "./handlers/eventHandler";
 import {otterbots_otterguard} from "./utils/otterguard/otterguard";
 import {otterbots_initTask} from "./utils/task";
+import {Otterlyapi} from "./utils/otterlyapi/otterlyapi";
 
 dotenv.config()
 
@@ -50,6 +51,9 @@ export class Otterbots {
 
         // Start emote react
         this.initEmoteReact()
+
+        // Init OtterlyApiModule
+        this.initOtterlyApiModule()
     }
 
     public getClient() {
@@ -131,5 +135,10 @@ export class Otterbots {
         await otterBots_initEmoteReact(client)
     }
 
+    // Init OtterlyApiModule
+    private initOtterlyApiModule(){
+        const otterlyApiModule = new Otterlyapi()
+        otterlyApiModule.init()
+    }
 
 }

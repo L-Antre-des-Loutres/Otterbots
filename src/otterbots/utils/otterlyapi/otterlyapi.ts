@@ -1,0 +1,78 @@
+import axios from "axios";
+import fs from "fs";
+import {RoutesType} from "./modules/RoutesType";
+import {otterlogs} from "../otterlogs";
+
+export class Otterlyapi {
+    private readonly jsonFilePath: string;
+
+    constructor() {
+        this.jsonFilePath = 'otterlyApiRoutes.json';
+    }
+
+    /**
+     * Initializes the application by registering the routes defined in a JSON file.
+     * Logs a success message if the registration is successful or an error message if it fails.
+     *
+     * @return {Promise<void>} A promise that resolves when the initialization process completes.
+     */
+    public async init(): Promise<void> {
+        // Register routes in the JSON file
+        try {
+            await this.registerRoutesInJsonFile();
+            otterlogs.success("Otterlyapi: Routes registered successfully!");
+        } catch (error) {
+            otterlogs.error("Otterlyapi: Failed to register routes: " + error);
+            return;
+        }
+    }
+
+    /**
+     * Registers routes in a local JSON file by fetching data from an API.
+     * This method fetches route data from an API endpoint defined in the environment variables,
+     * checks for the existence of the specified JSON file, and writes the fetched data to the file.
+     * If the file does not exist, it creates a new JSON file with the fetched data.
+     *
+     * @return {Promise<boolean>} A promise that resolves to true if the operation succeeds, or false if an error occurs.
+     */
+    private async registerRoutesInJsonFile(): Promise<boolean> {
+        const api = process.env.API_ROUTES_URL;
+        try {
+            const response = await axios.get(api);
+            const filePath = this.jsonFilePath;
+            // Create empty JSON file if it doesn't exist
+            if (!fs.existsSync(filePath)) {
+                fs.writeFileSync(filePath, '[]');
+            }
+            fs.writeFileSync(filePath, JSON.stringify(response.data, null, 2));
+            return true;
+        } catch (error) {
+            console.error('Error fetching routes:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Fetches route information by its alias from the JSON file containing route configurations.
+     * Reads and parses the JSON file, then searches for a route matching the provided alias.
+     * Returns undefined if the route is not found or if there's an error reading the file.
+     *
+     * @param alias The alias identifier of the route to search for
+     * @returns The route information (RoutesType) if found, undefined otherwise
+     * @throws Logs an error if there are issues reading/parsing the JSON file
+     */
+    public getRoutesInfosByAlias(alias: string): RoutesType | undefined {
+        const filePath = this.jsonFilePath;
+        try {
+            const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+            const routes: RoutesType[] = Array.isArray(jsonData.data)
+                ? jsonData.data
+                : Array.isArray(jsonData) ? jsonData : [];
+
+            return routes.find((route: RoutesType) => route.alias === alias);
+        } catch (error) {
+            otterlogs.error('Error reading routes file: ' + error);
+            return undefined;
+        }
+    }
+}

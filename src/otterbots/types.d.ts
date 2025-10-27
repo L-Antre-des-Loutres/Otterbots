@@ -14,6 +14,7 @@ declare global {
         interface ProcessEnv {
             NODE_ENV: "dev" | "prod"
             BOT_TOKEN: string
+            API_ROUTES_URL: string
             BOT_LANGUAGE: "FR" | "EN"
             DISCORD_CLIENT_ID: string
             DISCORD_GUILD_ID: string
