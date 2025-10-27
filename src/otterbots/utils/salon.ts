@@ -25,7 +25,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
     client.on('clientReady', async (): Promise<void> => {
         try {
             const channelNames: SalonType[] = [];
-            // Noms des salons à créer
+            // Names of channels to create
             for (const category of salonCategory) {
                 for (const salon of botSalon) {
                     if (salon.category === category.id && !channelNames.some(c => c.name === salon.name)) {
@@ -34,43 +34,43 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                 }
             }
 
-            // ID du serveur
+            // Server ID
             const guildId = process.env.DISCORD_GUILD_ID;
             if (!guildId) {
-                otterlogs.error("❌ GuildId non trouvée");
+                otterlogs.error("❌ GuildId not found");
                 return;
             }
 
-            // Tableau pour stocker les noms des salons existants
+            // Array to store existing channel names
             const channelsDiscord: string[] = [];
 
             try {
-                // Récupère la guild
+                // Get the guild
                 const guild: Guild | undefined = client.guilds.cache.get(guildId);
                 if (!guild) {
-                    otterlogs.error(`❌  Guild non trouvée (ID: ${guildId})`);
+                    otterlogs.error(`❌ Guild not found (ID: ${guildId})`);
                     return;
                 }
 
-                // Récupère la liste des salons et stocke les noms dans un tableau
+                // Get list of channels and store names in array
                 guild.channels.cache.forEach((channel) => {
                     channelsDiscord.push(channel.name);
                 });
 
-                // Vérifie si le rôle existe déjà
+                // Check if role already exists
                 let role = guild.roles.cache.find((r) => r.name === process.env.BOT_NAME);
                 if (!role) {
-                    // Crée un rôle spécifique
+                    // Create specific role
                     role = await guild.roles.create({
                         name: process.env.BOT_NAME,
                         color: Colors.Blue,
-                        reason: "Role spécifique pour la catégorie",
+                        reason: "Specific role for category",
                     });
                 }
 
-                // Pour chaque catégorie
+                // For each category 
                 for (const category of salonCategory) {
-                    // Vérifie si la catégorie existe déjà
+                    // Check if category already exists
                     let categoryChannel = guild.channels.cache.find(
                         (channel) =>
                             channel.name === category.name &&
@@ -78,7 +78,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                     );
 
                     if (!categoryChannel) {
-                        // Crée une catégorie avec les permissions pour le rôle spécifique
+                        // Creates a category with permissions for the specific role
                         categoryChannel = await guild.channels.create({
                             name: category.name,
                             type: ChannelType.GuildCategory,
@@ -96,7 +96,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                         otterlogs.success(`Category "${category.name}" created with permissions!`);
                     }
 
-                    // Crée les salons de cette catégorie
+                    // Creates channels in this category
                     for (const salon of botSalon) {
                         if (!channelsDiscord.includes(salon.name)) {
                             const newChannel = await guild.channels.create({
@@ -123,9 +123,21 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                                 existingChannels = {};
                                 otterlogs.error(`Error reading channels.json: ${error}`);
                             }
+
+                            // Create a webhook if enabled
+                            let webhookUrl = "";
+                            if (salon.webhook === true) {
+                                const webhook = await newChannel.createWebhook({
+                                    name: `${process.env.BOT_NAME} - Webhook`,
+                                    avatar: client.user?.displayAvatarURL() || "",
+
+                                });
+                                webhookUrl = webhook.url;
+                            }
+
                             const channelData = {
                                 ...existingChannels,
-                                [salon.alias]: {name: salon.name, id: newChannel.id}
+                                [salon.alias]: {name: salon.name, id: newChannel.id, webhook: webhookUrl}
                             };
                             fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
                             otterlogs.debug("Channels updated in channels.json");
@@ -148,16 +160,16 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
  * @param {string} alias - The alias identifier of the salon to look up
  * @return {Promise<string>} The channel ID if found, empty string otherwise
  */
-export async function getSalonIdByAlias(alias: string): Promise<string> {
+export function getSalonByAlias(alias: string): SalonType | void {
     try {
         const channels = JSON.parse(fs.readFileSync('channels.json', 'utf8'));
         if (channels[alias] && channels[alias].id) {
-            return channels[alias].id;
+            return channels[alias];
         }
         otterlogs.error(`Salon with alias "${alias}" not found in channels.json`);
-        return '';
+        return;
     } catch (error) {
         otterlogs.error(`Error reading channel ID: ${error}`);
-        return '';
+        return;
     }
 }

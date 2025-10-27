@@ -35,6 +35,7 @@ export const authorizedDomains: string[] = [
     "https://minecraft.fr",
     "https://www.minecraft.fr",
     "https://www.minecraft.net",
+    "https://minecraft.net",
     "https://tracker.gg",
     "https://www.tracker.gg",
     "https://www.pokebip.com",

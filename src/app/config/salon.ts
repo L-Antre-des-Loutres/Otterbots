@@ -2,7 +2,14 @@ import {SalonCategory, SalonType} from "../../otterbots/type/salonType";
 
 const ROLE_ID = "1254833145749049385";
 
- /**
+/** With this function you can get the information of a salon in relation to its creation alias
+ * ---------------------
+* getSalonByAlias("<alias of salon>")
+ * ---------------------
+**/
+
+
+/**
  * @type {SalonCategory[]} Array of salon category objects.
  * @property {number} id The unique identifier of the category.
  * @property {string} name The name of the category.
@@ -12,7 +19,7 @@ export const salonCategory: SalonCategory[] = [
     // Here your list of categories
     {
         id: 1,
-        name: "ahaha",
+        name: "test",
         role_id: ROLE_ID
     }
 ]
@@ -27,10 +34,11 @@ export const salonCategory: SalonCategory[] = [
 export const botSalon: SalonType[] = [
     // Here your list of salons
     {
-        alias: "test-1",
-        name: "test-salon-1",
+        alias: "test",
+        name: "test",
         role_id: ROLE_ID,
-        type: 0,
-        category: 1
-    },
+        category: 1,
+        type: 1,
+        webhook: true
+    }
 ];

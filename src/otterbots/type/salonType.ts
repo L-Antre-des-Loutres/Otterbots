@@ -12,6 +12,7 @@ export type SalonType = {
     type?: number;
     category?: number;
     channelId?: string;
+    webhook?: boolean;
 }
 
 /**
