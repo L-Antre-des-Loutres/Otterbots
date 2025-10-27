@@ -1,9 +1,12 @@
 import {Otterbots} from "../otterbots";
 
-// On récupére l'instance du bot
+// Get bot instance
 const bot = new Otterbots();
 
-// On lance le bot
+// Start the bot
 bot.start();
-bot.setActivity("custom","Hello Otters !")
+bot.setActivity("custom", "Hello Otters !")
 bot.startOtterGuard()
+
+// Start tasks (if you not use tasks, you can delete this)
+bot.initTask()
