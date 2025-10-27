@@ -25,6 +25,7 @@
 //      period = ""
 //      expression = "* * * * *"
 
+
 /**
  * Represents a list of scheduled tasks with their respective configurations.
  * Each task contains the following details:
@@ -38,9 +39,7 @@ export const tasks = [
 
 
 // Function to be executed at the scheduled time you can change it
-function test() {
-    console.log("Hello World")
-}
+function test() {}
 
 
 

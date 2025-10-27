@@ -160,16 +160,16 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
  * @param {string} alias - The alias identifier of the salon to look up
  * @return {Promise<string>} The channel ID if found, empty string otherwise
  */
-export async function getSalonIdByAlias(alias: string): Promise<string> {
+export function getSalonByAlias(alias: string): SalonType | void {
     try {
         const channels = JSON.parse(fs.readFileSync('channels.json', 'utf8'));
         if (channels[alias] && channels[alias].id) {
-            return channels[alias].id;
+            return channels[alias];
         }
         otterlogs.error(`Salon with alias "${alias}" not found in channels.json`);
-        return '';
+        return;
     } catch (error) {
         otterlogs.error(`Error reading channel ID: ${error}`);
-        return '';
+        return;
     }
 }
