@@ -8,7 +8,6 @@ const ROLE_ID = "1254833145749049385";
  * ---------------------
 **/
 
-
 /**
  * @type {SalonCategory[]} Array of salon category objects.
  * @property {number} id The unique identifier of the category.
@@ -19,7 +18,7 @@ export const salonCategory: SalonCategory[] = [
     // Here your list of categories
     {
         id: 1,
-        name: "test",
+        name: "test-test",
         role_id: ROLE_ID
     }
 ]
@@ -34,8 +33,8 @@ export const salonCategory: SalonCategory[] = [
 export const botSalon: SalonType[] = [
     // Here your list of salons
     {
-        alias: "test",
-        name: "test",
+        alias: "test-test-test-test",
+        name: "test-test-test-test",
         role_id: ROLE_ID,
         category: 1,
         type: 1,
