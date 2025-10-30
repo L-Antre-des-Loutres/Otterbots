@@ -3,7 +3,7 @@ import {ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, SlashCommand
 export default {
     data: new SlashCommandBuilder()
         .setName("git-repo")
-        .setDescription("Exemple de commande"),
+        .setDescription("Obtiens le lien du dépôt GitHub du bot."),
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         // Récupération de BOT_COLOR et VERSION depuis .env
         const bot_color = process.env.BOT_COLOR || "#FFFFFF";
