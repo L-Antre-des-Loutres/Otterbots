@@ -2,7 +2,7 @@
  * Represents the configuration settings for the Otterguard system.
  * This configuration determines specific protective behaviors.
  *
- * @type {Object<boolean>}
+ * @types {Object<boolean>}
  * @property {boolean} protectLink - Indicates whether link protection is enabled or disabled.
  */
 export const otterguardConfig: { [key: string]: boolean } = {

@@ -3,12 +3,12 @@ import {otterbots_reactions} from "../../app/config/emojiReact";
 import {otterlogs} from "../utils/otterlogs";
 
 /**
- * Initializes the event listener to automatically react to messages based on predefined conditions.
- * This function listens for the "messageCreate" event on the provided client, checks messages
+ * Initializes the events listener to automatically react to messages based on predefined conditions.
+ * This function listens for the "messageCreate" events on the provided client, checks messages
  * against a set of conditions, and reacts with the corresponding emoji if the condition is met.
  *
  * @param {Client} client - The Discord client instance used to handle message events and reactions.
- * @return {Promise<void>} Resolves once the event listener is initialized.
+ * @return {Promise<void>} Resolves once the events listener is initialized.
  */
 export async function otterBots_initEmoteReact(client: Client): Promise<void> {
     client.on('messageCreate', async (message) => {

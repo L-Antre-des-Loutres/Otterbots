@@ -101,7 +101,7 @@ export class Otterlyapi {
      *
      * @param {string} alias - The alias corresponding to the desired route.
      * @param param - Optional parameter to be appended to the route URL.
-     * @return {Promise<T | undefined>} A promise that resolves to the fetched data of type `T` if successful,
+     * @return {Promise<T | undefined>} A promise that resolves to the fetched data of types `T` if successful,
      * or undefined if the alias is invalid or an error occurs.
      */
     public static async getDataByAlias<T>(alias: string, param?: string): Promise<T | undefined> {
@@ -135,7 +135,7 @@ export class Otterlyapi {
      *
      * @param {string} alias - The alias used to identify the API route.
      * @param {undefined} data - The payload data to be sent in the POST request. Currently, only undefined is supported as the input.
-     * @return {Promise<T | undefined>} - A promise resolving to the fetched data of type T, or undefined in case of failure or invalid input.
+     * @return {Promise<T | undefined>} - A promise resolving to the fetched data of types T, or undefined in case of failure or invalid input.
      */
     public static async postDataByAlias<T>(alias: string, data: T): Promise<T | undefined> {
 

@@ -2,6 +2,7 @@ import {Client, Colors, Guild, PermissionFlagsBits, ChannelType} from "discord.j
 import {otterlogs} from "./otterlogs";
 import {botSalon, salonCategory} from "../../app/config/salon";
 import fs from "fs";
+import {SalonType} from "../types/salonType";
 
 /**
  * Creates a set of channels and a category with specific permissions in a Discord server.
@@ -10,7 +11,7 @@ import fs from "fs";
  * @param {Client} client - The Discord client used to interact with the Discord API.
  * @return {Promise<void>} A promise that resolves when all channels and roles have been successfully created or logged.
  */
-export type SalonType = {
+type JsonSalonType = {
     name: string;
     categoryName: string;
 }
@@ -24,7 +25,7 @@ export type SalonType = {
 export async function otterBots_initSalon(client: Client): Promise<void> {
     client.on('clientReady', async (): Promise<void> => {
         try {
-            const channelNames: SalonType[] = [];
+            const channelNames: JsonSalonType[] = [];
             // Names of channels to create
             for (const category of salonCategory) {
                 for (const salon of botSalon) {
@@ -138,7 +139,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                             };
 
                             // Write updated data back to channels.json
-                            await fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
+                            fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
                             otterlogs.debug("Channels updated in channels.json");
                         }
                     }

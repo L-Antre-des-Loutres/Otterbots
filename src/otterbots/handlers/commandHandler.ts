@@ -10,7 +10,7 @@ import {otterlogs} from "../utils/otterlogs";
  * @param client
  */
 export async function otterBots_loadCommands(client: Client): Promise<void> {
-    client.on("ready", async () => {
+    client.on("clientReady", async () => {
         const rootDir = path.join(__dirname, "..");
         const commandsPath = path.join(rootDir, "commands");
         const additionalPath = path.join(rootDir, "../app/commands/");
@@ -39,7 +39,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
 
                 const command = resolveCommand(imported);
 
-                // ⚠️ TypeScript type guard
+                // ⚠️ TypeScript types guard
                 if (!isSlashCommand(command)) {
                     otterlogs.error("Command ignored:" + file + " -> " + command);
                     continue;
@@ -86,7 +86,7 @@ function getAllCommandFiles(dir: string): string[] {
 
 /**
  * Resolves the default export of a module, if present, by traversing the `default` property chain.
- * @param {unknown} module - The module to resolve the command from. It can be any type.
+ * @param {unknown} module - The module to resolve the command from. It can be any types.
  * @return {unknown} The resolved command or the original module if no `default` chain exists.
  */
 function resolveCommand(module: unknown): unknown {
