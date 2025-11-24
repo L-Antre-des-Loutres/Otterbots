@@ -6,7 +6,7 @@ import {SlashCommand} from "../types";
  * Handles interaction events for chat input commands and executes the appropriate command logic.
  *
  * @param {Client} client - The Discord.js client instance used to handle events and manage interactions.
- * @return {void} This function does not return a value; it sets up event listeners for the client.
+ * @return {void} This function does not return a value; it sets up events listeners for the client.
  */
 export async function otterBots_interactionCreate(client: Client): Promise<void> {
     client.on("interactionCreate", async (interaction) => {

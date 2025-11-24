@@ -1,8 +1,8 @@
 /**
- * Salon properties with name, role ID and optional type/category.
+ * Salon properties with name, role ID and optional types/category.
  * @property {string} name - Salon name
  * @property {string} role_id - Associated role ID
- * @property {number} [type] - Salon type
+ * @property {number} [type] - Salon types
  * @property {number} [category] - Salon category
  */
 export type SalonType = {

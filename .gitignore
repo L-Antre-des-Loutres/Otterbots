@@ -6,8 +6,10 @@
 
 .env
 
+# IDEs and editors
+.vscode
 .idea
 
+#generated files
 channels.json
-
 otterlyApiRoutes.json

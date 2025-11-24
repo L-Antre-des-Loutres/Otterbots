@@ -2,7 +2,7 @@ import {Client} from "discord.js";
 import {otterlogs} from "../utils/otterlogs";
 
 /**
- * This method sets up an event listener for the 'clientReady' event on the provided client instance
+ * This method sets up an events listener for the 'clientReady' events on the provided client instance
  * and logs a success message when the bot is ready.
  *
  * @param {Client} client - The client instance representing the bot.

@@ -1,5 +1,8 @@
 import {ChatInputCommandInteraction, SlashCommandBuilder} from "discord.js";
 
+/**
+ * Ping command
+ */
 export default {
     data: new SlashCommandBuilder()
         .setName("ping")
