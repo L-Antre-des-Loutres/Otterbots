@@ -1,5 +1,4 @@
 import {Otterbots} from "../otterbots";
-import {getSalonByAlias} from "../otterbots/utils/salon";
 
 // Get bot instance
 const bot = new Otterbots();
