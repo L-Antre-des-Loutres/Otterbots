@@ -18,11 +18,10 @@ Configure l'activité affichée du bot (ex: "Joue à ...", "Regarde ...").
   - `"watching"` : Regarde
   - `"competing"` : En compétition dans
 - `activity` (string) : Le nom ou la description de l'activité.
-- `client` (Client) : L'instance du client Discord.js.
 
 **Exemple :**
 ```typescript
-otterBots_setActivity("playing", "Otterbots v1.0", client);
+bot.setActivity("playing", "Otterbots v1.0");
 ```
 
 ---

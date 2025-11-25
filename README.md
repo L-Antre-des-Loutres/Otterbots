@@ -244,6 +244,7 @@ Système de cache persistant :
 
 Toute la documentation détaillée se trouve dans `src/otterbots/docs/` :
 
+- **[OTTERBOTS_CLASS.md](./src/otterbots/docs/OTTERBOTS_CLASS.md)** - API publique de la classe Otterbots (démarrage, configuration)
 - **[UTILS_GENERAUX.md](./src/otterbots/docs/UTILS_GENERAUX.md)** - Utilitaires généraux (Activity, DisplayLogo, Salon, Task)
 - **[OTTERLOGS.md](./src/otterbots/docs/OTTERLOGS.md)** - Système de logging complet
 - **[OTTERGUARD.md](./src/otterbots/docs/OTTERGUARD.md)** - Module de sécurité
