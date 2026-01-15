@@ -1,5 +1,5 @@
-import {Client, TextChannel} from "discord.js";
-import {authorizedDomains} from "../../../../app/config/otterguardConfig";
+import {Client, Message, TextChannel} from "discord.js";
+import {authorizedDomains, otterguardConfig} from "../../../../app/config/otterguardConfig";
 import {otterguard_Embed, otterguard_EmbedModeration} from "../embed";
 import {otterlogs} from "../../otterlogs";
 
@@ -9,15 +9,15 @@ import {otterlogs} from "../../otterlogs";
  * Informative messages are sent to the user if their message is removed.
  *
  * @param {Client} client - The Discord.js client instance used to interact with the Discord API and listen for message events.
+ * @param message
  * @return {Promise<void>} Resolves when the function completes its asynchronous operations for processing messages.
  */
-export async function otterguard_protectLink(client: Client) {
-    client.on('messageCreate', async (message) => {
+export async function otterguard_protectLink(client: Client, message: Message) {
         try {
             let reason, titleContent
 
-            // Check that the message is not from a bot
-            if (message.author.bot) return;
+            // Check if the link protection feature is enabled
+            if (!otterguardConfig.protectLink) return
 
             // Check if the message contains a link
             if (!message.content.includes('http://') && !message.content.includes('https://')) return;
@@ -161,5 +161,4 @@ export async function otterguard_protectLink(client: Client) {
         } catch (error) {
             otterlogs.error('Error in message handler: ' + error);
         }
-    })
 }
