@@ -1,5 +1,5 @@
 import {Client} from "discord.js";
-import {otterlogs} from "../utils/otterlogs";
+import {otterlogs} from "../../utils/otterlogs";
 
 /**
  * This method sets up an events listener for the 'clientReady' events on the provided client instance
