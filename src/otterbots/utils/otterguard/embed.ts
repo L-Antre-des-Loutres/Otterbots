@@ -1,20 +1,27 @@
 import { EmbedBuilder } from "discord.js";
 
 /**
- * Creates and returns an embed message object with a specified title and message content, formatted for use in applications like Discord.
+ * Creates and returns an instance of EmbedBuilder with a standardized format for OtterGuard.
  *
- * @param {string} title - The title of the embed message.
- * @param {string} messageContent - The main content or description of the embed message.
- * @return {EmbedBuilder} An instance of EmbedBuilder containing the formatted embed message.
+ * @param {string} title - The title of the embed.
+ * @param {string} reason - The reason or context for the embed.
+ * @param {string} [messageContent] - Optional additional message content, which will be truncated to 1024 characters if provided.
+ * @return {EmbedBuilder} An EmbedBuilder instance with the specified details and a preset OtterGuard style.
  */
-export function otterguard_Embed(title: string, messageContent: string): EmbedBuilder {
-    return new EmbedBuilder()
-        .setColor(0x2B2D31) // Modern dark gray/embed background style or use 0x0099FF for accent. Let's go with a clean accent.
-        .setAuthor({ name: 'Otterguard' }) // Removed potentially invalid iconURL.
+export function otterguard_Embed(title: string, reason: string, messageContent?: string): EmbedBuilder {
+    const embed = new EmbedBuilder()
+        .setColor(0xED4245) // Harmonized with Moderation Red
+        .setAuthor({ name: '🛡️ OtterGuard Protection' }) // Harmonized Author style
         .setTitle(title)
-        .setDescription(messageContent)
+        .setDescription(`**Reason:**\n${reason}`) // Added structured Reason prefix
         .setTimestamp()
-        .setFooter({ text: 'Otterguard System' });
+        .setFooter({ text: 'Otterguard - Security System' }); // Harmonized Footer
+
+    if (messageContent) {
+        embed.addFields({ name: '📝 Context / Content', value: messageContent.substring(0, 1024) });
+    }
+
+    return embed;
 }
 
 /**

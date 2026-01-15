@@ -134,7 +134,7 @@ export async function otterguard_protectLink(client: Client, message: Message) {
 
                         // Send the message to the user
                         await message.author.send({
-                            embeds: [otterguard_EmbedModeration(titleContent, reason, message.content)]
+                            embeds: [otterguard_Embed(titleContent, reason, message.content)]
                         });
 
                         // Send a message to the moderators log channel

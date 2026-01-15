@@ -66,7 +66,7 @@ export async function otterguard_protectScam(client: Client, message: Message) {
 
                 // Send the message to the user
                 await message.author.send({
-                    embeds: [otterguard_Embed(titleContent, reason)]
+                    embeds: [otterguard_Embed(titleContent, reason, content)]
                 });
 
                 // Send a message to the moderators log channel
