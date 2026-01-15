@@ -1,6 +1,6 @@
 import {AutocompleteInteraction, ChatInputCommandInteraction, Client} from "discord.js";
-import {otterlogs} from "../utils/otterlogs";
-import {SlashCommand} from "../types";
+import {otterlogs} from "../../utils/otterlogs";
+import {SlashCommand} from "../../types";
 
 /**
  * Handles interaction events for chat input commands and executes the appropriate command logic.

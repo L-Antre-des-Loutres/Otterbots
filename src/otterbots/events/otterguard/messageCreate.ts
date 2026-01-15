@@ -1,7 +1,7 @@
-import {otterguard_protectLink} from "../utils/otterguard/modules/protectLink";
+import {otterguard_protectLink} from "../../utils/otterguard/modules/protectLink";
 import {Client} from "discord.js";
-import {otterguard_protectScam} from "../utils/otterguard/modules/protectScam";
-import {otterguard_protectSpam} from "../utils/otterguard/modules/protectSpam";
+import {otterguard_protectScam} from "../../utils/otterguard/modules/protectScam";
+import {otterguard_protectSpam} from "../../utils/otterguard/modules/protectSpam";
 
 /**
  * Handles the `messageCreate` event and applies protection mechanisms to incoming messages.

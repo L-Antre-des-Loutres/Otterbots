@@ -1,7 +1,7 @@
 import {otterlogs} from "../otterlogs";
 import {Client} from "discord.js";
-import {otterguard_messageCreate} from "../../events/messageCreate";
-import {otterguard_onMessageUpdate} from "../../events/onMessageUpdate";
+import {otterguard_messageCreate} from "../../events/otterguard/messageCreate";
+import {otterguard_onMessageUpdate} from "../../events/otterguard/onMessageUpdate";
 
 /**
  * Initializes the Otterguard protection system for the provided client.
