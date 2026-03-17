@@ -1,15 +1,22 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
     "outDir": "./build",
     "module": "nodenext",
     "target": "esnext",
     "strict": true,
     "noImplicitAny": true,
     "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "isolatedModules": true
-  }
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["vitest/globals"]
+  },
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "build"]
 }
