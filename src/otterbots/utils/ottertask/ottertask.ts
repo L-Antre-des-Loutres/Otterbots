@@ -10,13 +10,17 @@ export class OtterTask {
     private name : string
     private description : string
     private important : boolean
+    private onStart: boolean = false
     private cron_expression : string
+    private taskFunction : () => void
 
-    constructor( name: string, description: string, status: boolean, cron_expression: string) {
+    constructor( name: string, description: string, important: boolean, onStart: boolean, status: boolean, cron_expression: string, taskFunction: () => void) {
         this.name = name
         this.description = description
         this.important = status
+        this.onStart = onStart
         this.cron_expression = cron_expression
+        this.taskFunction = taskFunction
     }
 
     /** ****************
@@ -34,12 +38,16 @@ export class OtterTask {
      *  ***************** **/
     getName() {return this.name}
     getDescription() {return this.description}
-    getStatus() {return this.important}
+    getImportant() {return this.important}
+    getOnStart() {return this.onStart}
     getCronExpression() {return this.cron_expression}
+    getTaskFunction() {return this.taskFunction}
 
     setName(name: string) {this.name = name}
     setDescription(description: string) {this.description = description}
-    setStatus(status: boolean) {this.important = status}
+    setImportant(important: boolean) {this.important = important}
+    setOnStart(onStart: boolean) {this.onStart = onStart}
     setCronExpression(cron_expression: string) {this.cron_expression = cron_expression}
+    setTaskFunction(taskFunction: () => Promise<void>) {this.taskFunction = taskFunction}
 
 }
