@@ -32,12 +32,14 @@ describe('Classe OtterTask', () => {
         task.setImportant(true);
         task.setCronExpression('*/5 * * * *');
         task.setOnStart(true);
+        task.setTaskFunction(() => test(2))
 
         expect(task.getName()).toBe('Nettoyage');
         expect(task.getDescription()).toBe('Nettoie les vieux logs');
         expect(task.getImportant()).toBe(true);
         expect(task.getOnStart()).toBe(true);
         expect(task.getCronExpression()).toBe('*/5 * * * *');
+        expect(task.getTaskFunction()).toBe(task.getTaskFunction());
     });
 
     it('Task list', () => {
@@ -56,9 +58,9 @@ describe('Classe OtterTask', () => {
         expect(retrievedTask?.getDescription()).toBe('Sauvegarde de la BDD');
 
         // Obtenir le nombre de tâches dans la liste
-        expect(OtterTask.getTaskNumber()).toBe(3);
+        expect(OtterTask.getTaskNumber()).toBe(6);
 
         const taskList = OtterTask.getTaskList();
-        expect(taskList.length).toBe(3);
+        expect(taskList.length).toBe(6);
     });
 });

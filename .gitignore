@@ -13,3 +13,6 @@
 #generated files
 channels.json
 otterlyApiRoutes.json
+
+# tests generated files
+coverage

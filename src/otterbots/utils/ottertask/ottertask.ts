@@ -14,13 +14,16 @@ export class OtterTask {
     private cron_expression : string
     private taskFunction : () => void
 
-    constructor( name: string, description: string, important: boolean, onStart: boolean, cron_expression: string, taskFunction: () => void) {
+    constructor(name: string, description: string, important: boolean, onStart: boolean, cron_expression: string, taskFunction: () => void) {
         this.name = name
         this.description = description
         this.important = important
         this.onStart = onStart
         this.cron_expression = cron_expression
         this.taskFunction = taskFunction
+
+        // Add task to the list
+        OtterTask.addTask(this)
     }
 
     /** ****************
@@ -48,6 +51,5 @@ export class OtterTask {
     setImportant(important: boolean) {this.important = important}
     setOnStart(onStart: boolean) {this.onStart = onStart}
     setCronExpression(cron_expression: string) {this.cron_expression = cron_expression}
-    setTaskFunction(taskFunction: () => Promise<void>) {this.taskFunction = taskFunction}
-
+    setTaskFunction(taskFunction: () => void) {this.taskFunction = taskFunction}
 }
