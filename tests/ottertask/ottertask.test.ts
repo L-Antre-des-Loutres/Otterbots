@@ -20,6 +20,7 @@ describe('Classe OtterTask', () => {
         expect(task.getName()).toBe('Backup');
         expect(task.getDescription()).toBe('Sauvegarde de la BDD');
         expect(task.getImportant()).toBe(true);
+        expect(task.getOnStart()).toBe(false);
         expect(task.getCronExpression()).toBe('0 0 * * *');
         expect(typeof task.getTaskFunction()).toBe('function');
     });
@@ -30,10 +31,12 @@ describe('Classe OtterTask', () => {
         task.setDescription('Nettoie les vieux logs');
         task.setImportant(true);
         task.setCronExpression('*/5 * * * *');
+        task.setOnStart(true);
 
         expect(task.getName()).toBe('Nettoyage');
         expect(task.getDescription()).toBe('Nettoie les vieux logs');
         expect(task.getImportant()).toBe(true);
+        expect(task.getOnStart()).toBe(true);
         expect(task.getCronExpression()).toBe('*/5 * * * *');
     });
 
