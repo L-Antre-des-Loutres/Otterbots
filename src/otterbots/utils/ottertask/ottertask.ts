@@ -14,10 +14,10 @@ export class OtterTask {
     private cron_expression : string
     private taskFunction : () => void
 
-    constructor( name: string, description: string, important: boolean, onStart: boolean, status: boolean, cron_expression: string, taskFunction: () => void) {
+    constructor( name: string, description: string, important: boolean, onStart: boolean, cron_expression: string, taskFunction: () => void) {
         this.name = name
         this.description = description
-        this.important = status
+        this.important = important
         this.onStart = onStart
         this.cron_expression = cron_expression
         this.taskFunction = taskFunction

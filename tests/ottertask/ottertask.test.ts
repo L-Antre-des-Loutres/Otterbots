@@ -8,17 +8,24 @@ function test(ms: number): void {
 
 describe('Classe OtterTask', () => {
 
+    // Nettoyer la liste des tâches avant chaque test
+    beforeEach(() => {
+        // Réinitialiser la liste des tâches pour éviter les interférences entre tests
+        const taskList = OtterTask.getTaskList();
+        taskList.length = 0;
+    });
+
     it(`Initialisation de la classe`, () => {
-        const task = new OtterTask('Backup', 'Sauvegarde de la BDD', true, false, true, '0 0 * * *', () => test(2));
+        const task = new OtterTask('Backup', 'Sauvegarde de la BDD', true, false, '0 0 * * *', () => test(2));
         expect(task.getName()).toBe('Backup');
         expect(task.getDescription()).toBe('Sauvegarde de la BDD');
         expect(task.getImportant()).toBe(true);
         expect(task.getCronExpression()).toBe('0 0 * * *');
-        expect(typeof task.getTaskFunction()).toBe('function')
+        expect(typeof task.getTaskFunction()).toBe('function');
     });
 
     it('Setters & Getters', () => {
-        const task = new OtterTask('Initiale', 'Description de base', false, false, true, '* * * * *', () => test(2));
+        const task = new OtterTask('Initiale', 'Description de base', false, false, '* * * * *', () => test(2));
         task.setName('Nettoyage');
         task.setDescription('Nettoie les vieux logs');
         task.setImportant(true);
@@ -31,15 +38,16 @@ describe('Classe OtterTask', () => {
     });
 
     it('Task list', () => {
-        const task = new OtterTask('Initiale', 'Description de base', false, false, true, '* * * * *', () => test(2));
-        const task2 = new OtterTask('Backup', 'Sauvegarde de la BDD', true, false, true, '0 0 * * *', () => test(2));
-        const task3 = new OtterTask('Nettoyage', 'Nettoie les vieux logs', false, false, true, '0 0 1 * *', () => test(2));
+        const task = new OtterTask('Initiale', 'Description de base', false, false, '* * * * *', () => test(2));
+        const task2 = new OtterTask('Backup', 'Sauvegarde de la BDD', true, false, '0 0 * * *', () => test(2));
+        const task3 = new OtterTask('Nettoyage', 'Nettoie les vieux logs', false, false, '0 0 1 * *', () => test(2));
+
         // On ajoute des tâches à la liste
         OtterTask.addTask(task);
         OtterTask.addTask(task2);
         OtterTask.addTask(task3);
 
-        // On récupére une tâche par son nom
+        // On récupère une tâche par son nom
         const retrievedTask = OtterTask.getTaskByName('Backup');
         expect(retrievedTask).toBeDefined();
         expect(retrievedTask?.getDescription()).toBe('Sauvegarde de la BDD');
