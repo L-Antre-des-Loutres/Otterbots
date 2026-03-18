@@ -1,5 +1,8 @@
 export class OtterTask {
 
+    // List of tasks
+    private static taskList: OtterTask[] = []
+
     private name : string
     private description : string
     private important : boolean
@@ -11,6 +14,22 @@ export class OtterTask {
         this.important = status
         this.cron_expression = cron_expression
 
+    }
+
+    static getTaskList() {
+        return this.taskList
+    }
+
+    static getTaskByName(name: string) {
+        return this.taskList.find(task => task.name === name)
+    }
+
+    static getTaskNumber() {
+        return this.taskList.length
+    }
+
+    static addTask(task: OtterTask) {
+        this.taskList.push(task)
     }
 
     /** ****************
