@@ -50,15 +50,36 @@ export class OtterTaskManager {
     /**
      * Initializes and executes tasks defined in the `tasksOnStart` list.
      * Each task in the list is expected to provide a callable task function,
-     * which will be invoked during this process.
+     * which will be invoked during this process. Logs task execution outcomes
+     * and durations. Tracks and logs tasks that fail to execute.
      *
      * @return {void} This method does not return a value.
      */
     initTasksOnStart() {
+        let taskCount = 0;
+        const failedTasks: string[] = [];
+
         this.tasksOnStart.forEach(task => {
+            const taskName = task.getName();
             const taskFunction = task.getTaskFunction();
-            taskFunction();
+
+            const startTime = Date.now();
+            try {
+                taskFunction();
+                const duration = Date.now() - startTime;
+                otterlogs.success(`Task ${taskName} completed successfully in ${duration}ms`);
+                taskCount++;
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                otterlogs.error(`Task ${taskName} failed after ${duration}ms: ${error}`);
+                failedTasks.push(taskName);
+            }
         });
+
+        if (failedTasks.length > 0) {
+            otterlogs.error(`${failedTasks.length} task(s) failed to execute on start: ${failedTasks.join(', ')}`);
+        }
+        otterlogs.success(`${taskCount} task(s) executed on start.`);
     }
 
     /**
