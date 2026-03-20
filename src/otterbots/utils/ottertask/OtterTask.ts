@@ -1,10 +1,12 @@
 /**
- * Represents a scheduled task with a name, description, status, and a cron expression.
+ * Represents a task managed by the OtterTask system. Each task has a name, description,
+ * a priority status, a start condition, a cron expression for scheduling, and a function
+ * to be executed when the task is triggered.
+ * @class OtterTask
+ * @author matheo-1712
+ * @version 1.0.0
  */
 export class OtterTask {
-
-    // List of tasks
-    private static taskList: OtterTask[] = []
 
     // Task properties
     private name : string
@@ -21,20 +23,7 @@ export class OtterTask {
         this.onStart = onStart
         this.cron_expression = cron_expression
         this.taskFunction = taskFunction
-
-        // Add task to the list
-        OtterTask.addTask(this)
     }
-
-    /** ****************
-     * TASK LIST METHODS
-     *  ***************** **/
-    static getTaskList() {return this.taskList}
-    static getTaskByName(name: string) {
-        return this.taskList.find(task => task.name === name)
-    }
-    static getTaskNumber() {return this.taskList.length}
-    static addTask(task: OtterTask) {this.taskList.push(task)}
 
     /** ****************
      * GETTERS / SETTERS
