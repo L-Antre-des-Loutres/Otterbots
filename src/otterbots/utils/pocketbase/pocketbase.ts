@@ -4,6 +4,9 @@ import yaml from 'js-yaml';
 import { PocketBaseAlias, PocketBaseConfig } from './modules/PocketBaseTypes';
 import { otterlogs } from '../otterlogs';
 
+/**
+ * OtterPocketBase utility class to manage PocketBase interactions using YAML aliases.
+ */
 export class OtterPocketBase {
     private static pb: PocketBase;
     private static config: PocketBaseConfig;
@@ -11,13 +14,13 @@ export class OtterPocketBase {
     private static initPromise: Promise<void> | null = null;
 
     /**
-     * Initialise l'instance PocketBase et charge la configuration YAML.
-     * Cette méthode est désormais privée car appelée automatiquement.
+     * Initializes the PocketBase instance and loads the YAML configuration.
+     * This method is private because it is called automatically by ensureInitialized.
      */
     private static async init(): Promise<void> {
         try {
             if (!fs.existsSync(OtterPocketBase.configPath)) {
-                otterlogs.error(`OtterPocketBase: Fichier de configuration introuvable : ${OtterPocketBase.configPath}`);
+                otterlogs.error(`OtterPocketBase: Configuration file not found: ${OtterPocketBase.configPath}`);
                 return;
             }
 
@@ -29,7 +32,7 @@ export class OtterPocketBase {
             const password = process.env.PB_PASSWORD;
 
             if (!url) {
-                otterlogs.error("OtterPocketBase: URL PocketBase (PB_URL) manquante dans le .env.");
+                otterlogs.error("OtterPocketBase: PocketBase URL (PB_URL) missing in .env.");
                 return;
             }
 
@@ -37,22 +40,22 @@ export class OtterPocketBase {
 
             if (email && password) {
                 try {
-                    // Authentification exclusive via la collection '_superusers' (PocketBase v0.23+)
+                    // Exclusive authentication via the '_superusers' collection (PocketBase v0.23+)
                     await OtterPocketBase.pb.collection('_superusers').authWithPassword(email, password);
-                    otterlogs.debug("OtterPocketBase: Initialisé avec succès via _superusers !");
+                    otterlogs.debug("OtterPocketBase: Successfully initialized via _superusers!");
                 } catch (error) {
-                    otterlogs.error(`OtterPocketBase: Échec de l'authentification (_superusers) : ${error}`);
+                    otterlogs.error(`OtterPocketBase: Authentication failed (_superusers): ${error}`);
                 }
             } else {
-                otterlogs.debug("OtterPocketBase: Initialisé en mode invité.");
+                otterlogs.debug("OtterPocketBase: Initialized in guest mode.");
             }
         } catch (error) {
-            otterlogs.error(`OtterPocketBase: Erreur lors de l'initialisation : ${error}`);
+            otterlogs.error(`OtterPocketBase: Error during initialization: ${error}`);
         }
     }
 
     /**
-     * S'assure que l'instance est initialisée avant toute opération.
+     * Ensures the instance is initialized before any operation.
      */
     private static async ensureInitialized(): Promise<void> {
         if (OtterPocketBase.pb) return;
@@ -65,17 +68,18 @@ export class OtterPocketBase {
     }
 
     /**
-     * Récupère la configuration d'un alias.
+     * Retrieves the configuration of a specific alias.
      */
     private static getAliasConfig(alias: string): PocketBaseAlias | undefined {
         return OtterPocketBase.config?.aliases.find(a => a.alias === alias);
     }
 
     /**
-     * Exécute une action PocketBase via un alias.
+     * Executes a PocketBase action via an alias defined in the YAML file.
      * 
-     * @param alias L'alias défini dans le fichier YAML.
-     * @param params Paramètres additionnels (ID pour getOne, data pour create/update, options pour getList).
+     * @param alias The unique identifier for the action in the YAML config.
+     * @param params Additional parameters depending on the action (ID, data, options, etc.).
+     * @returns A promise resolving to the typed result T or undefined on error.
      */
     public static async execByAlias<T>(alias: string, ...params: unknown[]): Promise<T | undefined> {
         await OtterPocketBase.ensureInitialized();
@@ -83,12 +87,12 @@ export class OtterPocketBase {
         const aliasConfig = OtterPocketBase.getAliasConfig(alias);
 
         if (!aliasConfig) {
-            otterlogs.error(`OtterPocketBase: Alias "${alias}" non trouvé.`);
+            otterlogs.error(`OtterPocketBase: Alias "${alias}" not found.`);
             return undefined;
         }
 
         if (!OtterPocketBase.pb) {
-            otterlogs.error("OtterPocketBase: L'instance n'a pas pu être initialisée.");
+            otterlogs.error("OtterPocketBase: Instance could not be initialized.");
             return undefined;
         }
 
@@ -119,20 +123,20 @@ export class OtterPocketBase {
                     result = await collection.delete(params[0] as string, (params[1] || aliasConfig.options) as Record<string, unknown>);
                     break;
                 default:
-                    otterlogs.error(`OtterPocketBase: Action "${aliasConfig.action}" non supportée.`);
+                    otterlogs.error(`OtterPocketBase: Action "${aliasConfig.action}" not supported.`);
                     return undefined;
             }
 
             return result as T;
         } catch (error) {
-            otterlogs.error(`OtterPocketBase: Erreur lors de l'exécution de l'alias "${alias}" : ${error}`);
+            otterlogs.error(`OtterPocketBase: Error executing alias "${alias}": ${error}`);
             return undefined;
         }
     }
 
     /**
-     * Accès direct à l'instance PocketBase pour des besoins complexes.
-     * Initialise automatiquement la connexion si nécessaire.
+     * Direct access to the PocketBase instance for complex needs.
+     * Automatically initializes the connection if necessary.
      */
     public static async getClient(): Promise<PocketBase> {
         await OtterPocketBase.ensureInitialized();

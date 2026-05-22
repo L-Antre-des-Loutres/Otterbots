@@ -13,7 +13,7 @@ bot.startOtterGuard()
 // Start tasks (if you not use tasks, you can delete this)
 bot.initTask()
 
-// Exemple of OtterPocketBase
+// Example of OtterPocketBase
 OtterPocketBase.execByAlias("get_discord_users").then(data => {
     otterlogs.log(JSON.stringify(data, null, 2));
 });
