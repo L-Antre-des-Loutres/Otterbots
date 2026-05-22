@@ -34,7 +34,8 @@ export class OtterHealthCheck {
                         human: this.formatUptime(uptimeSeconds)
                     },
                     discord: {
-                        ping: client?.ws.ping || 0
+                        ping: client?.ws.ping || 0,
+                        avatar: client?.user?.displayAvatarURL() || null
                     },
                 };
 
