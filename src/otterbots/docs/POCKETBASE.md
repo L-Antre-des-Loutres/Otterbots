@@ -1,10 +1,10 @@
-# OtterPocketBase - PocketBase Manager via Aliases
+# OtterPocketBase - Gestionnaire PocketBase via Alias
 
-OtterPocketBase is a utility class for managing interactions with a PocketBase instance using aliases defined in a YAML configuration file. This approach centralizes the management of collections and actions, while connection and authentication are secured via environment variables.
+OtterPocketBase est une classe utilitaire permettant de gérer les interactions avec une instance PocketBase en utilisant des alias définis dans un fichier de configuration YAML. Cette approche permet de centraliser la gestion des collections et des actions, tandis que la connexion et l'authentification sont sécurisées via les variables d'environnement.
 
 ## Configuration
 
-The `endpoint_alias.yaml` file at the root of the project defines only the aliases:
+Le fichier `endpoint_alias.yaml` à la racine du projet définit uniquement les alias :
 
 ```yaml
 aliases:
@@ -20,65 +20,65 @@ aliases:
 
 ---
 
-## Connection and Authentication
+## Connexion et Authentification
 
-Connection is entirely managed via the `.env` file.
+La connexion est entièrement gérée via le fichier `.env`.
 
-**Required environment variables:**
-- `PB_URL`: The URL of your PocketBase instance (e.g., `https://your-pocketbase.com`).
-- `PB_EMAIL`: The Superuser account email.
-- `PB_PASSWORD`: The associated password.
+**Variables d'environnement requises :**
+- `PB_URL` : L'URL de votre instance PocketBase (ex: `https://votre-pocketbase.com`).
+- `PB_EMAIL` : L'email du compte Superuser.
+- `PB_PASSWORD` : Le mot de passe associé.
 
-If `PB_EMAIL` and `PB_PASSWORD` are present during `init()`, the bot will attempt `authWithPassword` authentication exclusively on the `_superusers` collection (compatible with PocketBase v0.23+). Otherwise, it will operate in guest mode.
+Si `PB_EMAIL` et `PB_PASSWORD` sont présents lors du `init()`, le bot tentera une authentification `authWithPassword` exclusivement sur la collection `_superusers` (compatible PocketBase v0.23+). Sinon, il fonctionnera en mode invité.
 
 ---
 
-## OtterPocketBase Class
+## Classe `OtterPocketBase`
 
-### Initialization
+### Initialisation
 
-Initialization is now **automatic**. The connection to PocketBase and the loading of the YAML configuration occur during the first call to `execByAlias()` or `getClient()`. You no longer need to call `init()` manually.
+L'initialisation est désormais **automatique**. La connexion à PocketBase et le chargement de la configuration YAML se font lors du premier appel à `execByAlias()` ou `getClient()`. Vous n'avez plus besoin d'appeler `init()` manuellement.
 
-### Using Aliases
+### Utilisation des Alias
 
 #### `execByAlias<T>(alias, ...params)`
-Executes the action associated with the alias. This method ensures the connection is established before launching the request.
+Exécute l'action associée à l'alias. Le tableau ci-dessous détaille les paramètres attendus pour chaque action :
 
-| Action | Parameter 1 | Parameter 2 | Parameter 3 | Description |
+| Action | Paramètre 1 | Paramètre 2 | Paramètre 3 | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `getList` | `page` (number) | `perPage` (number) | `options` (object) | Retrieves a paginated list. |
-| `getFullList` | `options` (object) | - | - | Retrieves all records. |
-| `getOne` | `id` (string) | `options` (object) | - | Retrieves a record by its ID. |
-| `getFirstListItem` | `filter` (string) | `options` (object) | - | Retrieves the first item matching the filter. |
-| `create` | `data` (object) | `options` (object) | - | Creates a new record. |
-| `update` | `id` (string) | `data` (object) | `options` (object) | Updates an existing record. |
-| `delete` | `id` (string) | `options` (object) | - | Deletes a record. |
+| `getList` | `page` (number) | `perPage` (number) | `options` (object) | Récupère une liste paginée. |
+| `getFullList` | `options` (object) | - | - | Récupère tous les enregistrements. |
+| `getOne` | `id` (string) | `options` (object) | - | Récupère un enregistrement par son ID. |
+| `getFirstListItem` | `filter` (string) | `options` (object) | - | Récupère le premier élément correspondant au filtre. |
+| `create` | `data` (object) | `options` (object) | - | Crée un nouvel enregistrement. |
+| `update` | `id` (string) | `data` (object) | `options` (object) | Met à jour un enregistrement existant. |
+| `delete` | `id` (string) | `options` (object) | - | Supprime un enregistrement. |
 
-**Examples:**
+**Exemples :**
 
 ```typescript
 import { OtterPocketBase } from "@/otterbots/utils/pocketbase/pocketbase";
 
-// No need for init()!
+// Pas besoin d'init() !
 const users = await OtterPocketBase.execByAlias("get_users");
 
-// Retrieve a document by ID with query options
+// Récupérer un document par ID avec des options de requête
 const user = await OtterPocketBase.execByAlias("get_user_by_id", "RECORD_ID", { expand: "roles" });
 
-// Create a document
+// Créer un document
 const newLog = await OtterPocketBase.execByAlias("create_log", { 
-    message: "Action performed",
+    message: "Action effectuée",
     user: "12345" 
 });
 
-// Delete a document
+// Supprimer un document
 await OtterPocketBase.execByAlias("delete_log", "RECORD_ID");
 ```
 
-### Direct Client Access
+### Accès Direct au Client
 
-#### `getClient()` (Asynchronous static method)
-If you need to use specific features not covered by aliases (e.g., Realtime/Subscriptions), use `getClient()`. It guarantees the instance is initialized before returning it.
+#### `getClient()` (Méthode statique asynchrone)
+Si vous avez besoin d'utiliser des fonctionnalités spécifiques non couvertes par les alias (ex: Realtime/Subscriptions), utilisez `getClient()`. Elle garantit que l'instance est initialisée avant de vous la retourner.
 
 ```typescript
 const client = await OtterPocketBase.getClient();
@@ -89,9 +89,9 @@ client.collection('messages').subscribe('*', (e) => {
 
 ---
 
-## Development and Types
+## Développement et Types
 
-When calling `execByAlias<T>`, it is highly recommended to pass an interface to type the return value:
+Lors de l'appel à `execByAlias<T>`, il est fortement recommandé de passer une interface pour typer le retour :
 
 ```typescript
 interface User {
@@ -100,5 +100,5 @@ interface User {
 }
 
 const user = await OtterPocketBase.execByAlias<User>("get_user_by_id", "ID");
-// user is of type User | undefined
+// user est de type User | undefined
 ```
