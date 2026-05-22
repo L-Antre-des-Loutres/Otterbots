@@ -45,10 +45,6 @@ Une requête `GET` sur `http://votre-domaine:PORT/healthcheck` renverra un statu
       "rss": "120 MB",
       "heapUsed": "45 MB",
       "heapTotal": "60 MB"
-    },
-    "cpu": {
-      "user": 15000,
-      "system": 5000
     }
   }
 }
