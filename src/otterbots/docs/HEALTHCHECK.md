@@ -22,23 +22,43 @@ OtterHealthCheck.start(bot.getClient());
 
 ### Endpoint `/healthcheck`
 
-Une requête `GET` sur `http://votre-domaine:PORT/healthcheck` renverra un statut **200 OK** avec le corps suivant :
+Une requête `GET` sur `http://votre-domaine:PORT/healthcheck` renverra un statut **200 OK** avec un corps JSON structuré selon les standards :
 
 ```json
 {
-    "status": "ok",
-    "uptime": 123.45,
-    "ping": 42,
-    "version": "1.0.0",
-    "timestamp": "2026-05-22T03:30:00.000Z"
+  "status": "UP",
+  "name": "MonSuperBot",
+  "version": "1.0.0",
+  "timestamp": "2026-05-22T03:30:00.000Z",
+  "uptime": {
+    "seconds": 3665,
+    "human": "1h 1m 5s"
+  },
+  "checks": {
+    "discord": {
+      "status": "UP",
+      "ping": 42
+    }
+  },
+  "resources": {
+    "memory": {
+      "rss": "120 MB",
+      "heapUsed": "45 MB",
+      "heapTotal": "60 MB"
+    },
+    "cpu": {
+      "user": 15000,
+      "system": 5000
+    }
+  }
 }
 ```
 
-- `status`: Indique que le serveur HTTP répond.
-- `uptime`: Temps écoulé (en secondes) depuis le démarrage du processus Node.js.
-- `ping`: Latence actuelle de la connexion WebSocket avec Discord (en ms).
-- `version`: Version du bot définie dans le `.env`.
-- `timestamp`: Heure actuelle au format ISO.
+- `status`: État global du bot (`UP` ou `DEGRADED`).
+- `name`: Nom du bot défini dans le `.env`.
+- `uptime`: Temps de fonctionnement (en secondes et format lisible).
+- `checks`: Détail par composant (ex: connexion Discord).
+- `resources`: Utilisation des ressources système (Mémoire et CPU).
 
 ## Utilisation avancée
 

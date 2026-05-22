@@ -22,16 +22,36 @@ export class OtterHealthCheck {
 
         this.server = http.createServer((req, res) => {
             if (req.method === 'GET' && req.url === '/healthcheck') {
+                const memoryUsage = process.memoryUsage();
+                const uptimeSeconds = process.uptime();
+
                 const healthData = {
-                    status: 'ok',
-                    uptime: process.uptime(),
-                    ping: client?.ws.ping || 0,
-                    version: process.env.VERSION || 'unknown',
-                    timestamp: new Date().toISOString()
+                    status: client?.ws.status === 0 ? 'UP' : 'DEGRADED',
+                    name: process.env.BOT_NAME || 'otterbot',
+                    version: process.env.VERSION || '1.0.0',
+                    timestamp: new Date().toISOString(),
+                    uptime: {
+                        seconds: Math.floor(uptimeSeconds),
+                        human: this.formatUptime(uptimeSeconds)
+                    },
+                    checks: {
+                        discord: {
+                            status: client?.ws.status === 0 ? 'UP' : 'DOWN',
+                            ping: client?.ws.ping || 0
+                        }
+                    },
+                    resources: {
+                        memory: {
+                            rss: `${Math.round(memoryUsage.rss / 1024 / 1024)} MB`,
+                            heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)} MB`,
+                            heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)} MB`
+                        },
+                        cpu: process.cpuUsage()
+                    }
                 };
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify(healthData));
+                res.end(JSON.stringify(healthData, null, 2));
             } else {
                 res.writeHead(404, { 'Content-Type': 'text/plain' });
                 res.end('Not Found');
@@ -45,6 +65,24 @@ export class OtterHealthCheck {
         this.server.on('error', (err) => {
             otterlogs.error(`OtterHealthCheck: Server error: ${err.message}`);
         });
+    }
+
+    /**
+     * Formats seconds into a human-readable uptime string.
+     */
+    private static formatUptime(seconds: number): string {
+        const d = Math.floor(seconds / (3600 * 24));
+        const h = Math.floor((seconds % (3600 * 24)) / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+
+        const parts = [];
+        if (d > 0) parts.push(`${d}d`);
+        if (h > 0) parts.push(`${h}h`);
+        if (m > 0) parts.push(`${m}m`);
+        if (s > 0) parts.push(`${s}s`);
+
+        return parts.join(' ') || '0s';
     }
 
     /**
