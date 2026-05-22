@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import {tasks} from "../../app/config/task";
+import {tasks} from "@/app/config/task";
 import {otterlogs} from "./otterlogs";
 
 /**
