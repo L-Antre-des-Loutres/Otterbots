@@ -59,11 +59,6 @@ export class Otterbots {
         // Start health check server
         OtterHealthCheck.start(this.client);
     }
-
-    public getClient() {
-        return this.client
-    }
-
     /**
      * Sets the activity status for the client.
      * @param {string} [activityType="playing"] - The types of activity ("playing", "streaming", "listening", "watching", "competing".).

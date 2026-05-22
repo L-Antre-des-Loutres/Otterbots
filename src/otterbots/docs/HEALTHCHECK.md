@@ -34,11 +34,8 @@ Une requête `GET` sur `http://votre-domaine:PORT/healthcheck` renverra un statu
     "seconds": 3665,
     "human": "1h 1m 5s"
   },
-  "checks": {
-    "discord": {
-      "status": "UP",
-      "ping": 42
-    }
+  "discord": {
+    "ping": 42
   },
   "resources": {
     "memory": {
@@ -50,11 +47,11 @@ Une requête `GET` sur `http://votre-domaine:PORT/healthcheck` renverra un statu
 }
 ```
 
-- `status`: État global du bot (`UP` ou `DEGRADED`).
+- `status`: État global du bot (`UP` ou `DOWN`).
 - `name`: Nom du bot défini dans le `.env`.
 - `uptime`: Temps de fonctionnement (en secondes et format lisible).
-- `checks`: Détail par composant (ex: connexion Discord).
-- `resources`: Utilisation des ressources système (Mémoire et CPU).
+- `discord`: Informations liées à la connexion Discord (ping).
+- `resources`: Utilisation de la mémoire système.
 
 ## Utilisation avancée
 

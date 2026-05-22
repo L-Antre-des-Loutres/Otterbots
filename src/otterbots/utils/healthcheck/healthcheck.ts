@@ -26,7 +26,7 @@ export class OtterHealthCheck {
                 const uptimeSeconds = process.uptime();
 
                 const healthData = {
-                    status: client?.ws.status === 0 ? 'UP' : 'DEGRADED',
+                    status: client?.ws.status === 0 ? 'UP' : 'DOWN',
                     name: process.env.BOT_NAME || 'otterbot',
                     version: process.env.VERSION || '1.0.0',
                     timestamp: new Date().toISOString(),
@@ -34,11 +34,8 @@ export class OtterHealthCheck {
                         seconds: Math.floor(uptimeSeconds),
                         human: this.formatUptime(uptimeSeconds)
                     },
-                    checks: {
-                        discord: {
-                            status: client?.ws.status === 0 ? 'UP' : 'DOWN',
-                            ping: client?.ws.ping || 0
-                        }
+                    discord: {
+                        ping: client?.ws.ping || 0
                     },
                     resources: {
                         memory: {
