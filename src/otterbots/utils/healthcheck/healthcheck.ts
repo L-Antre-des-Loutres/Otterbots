@@ -22,7 +22,6 @@ export class OtterHealthCheck {
 
         this.server = http.createServer((req, res) => {
             if (req.method === 'GET' && req.url === '/healthcheck') {
-                const memoryUsage = process.memoryUsage();
                 const uptimeSeconds = process.uptime();
 
                 const healthData = {
@@ -37,13 +36,6 @@ export class OtterHealthCheck {
                     discord: {
                         ping: client?.ws.ping || 0
                     },
-                    resources: {
-                        memory: {
-                            rss: `${Math.round(memoryUsage.rss / 1024 / 1024)} MB`,
-                            heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)} MB`,
-                            heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)} MB`
-                        }
-                    }
                 };
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -79,17 +71,5 @@ export class OtterHealthCheck {
         if (s > 0) parts.push(`${s}s`);
 
         return parts.join(' ') || '0s';
-    }
-
-    /**
-     * Stops the health check server.
-     */
-    public static stop(): void {
-        if (this.server) {
-            this.server.close(() => {
-                otterlogs.log("OtterHealthCheck: Server stopped.");
-            });
-            this.server = null;
-        }
     }
 }
