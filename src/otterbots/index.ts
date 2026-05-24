@@ -13,6 +13,7 @@ import {otterbots_eventHandler} from "./handlers/eventHandler";
 import {otterbots_otterguard} from "./utils/otterguard/otterguard";
 import {otterbots_initTask} from "./utils/task";
 import {Otterlyapi} from "./utils/otterlyapi/otterlyapi";
+import {OtterHealthCheck} from "./utils/healthcheck/healthcheck";
 
 dotenv.config()
 
@@ -54,12 +55,10 @@ export class Otterbots {
 
         // Init OtterlyApiModule
         this.initOtterlyApiModule()
-    }
 
-    public getClient() {
-        return this.client
+        // Start health check server
+        OtterHealthCheck.start(this.client);
     }
-
     /**
      * Sets the activity status for the client.
      * @param {string} [activityType="playing"] - The types of activity ("playing", "streaming", "listening", "watching", "competing".).
