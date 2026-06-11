@@ -54,6 +54,8 @@ export class Otterbots {
 
         // Init OtterlyApiModule
         this.initOtterlyApiModule()
+
+
     }
 
     public getClient() {
