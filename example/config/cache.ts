@@ -1,5 +1,5 @@
 // On initialise Ottercache
-import {OtterCache} from "../../otterbots/utils/ottercache/ottercache";
+import {OtterCache} from "../../src/utils/ottercache/ottercache";
 
 /**
  * Caches configuration.

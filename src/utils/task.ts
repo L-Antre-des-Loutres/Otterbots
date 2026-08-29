@@ -1,6 +1,6 @@
 import cron from "node-cron";
-import {tasks} from "@/app/config/task";
 import {otterlogs} from "./otterlogs";
+import {OtterbotsConfig} from "../types/config";
 
 /**
  * Initializes and schedules tasks configured in the system.
@@ -9,12 +9,13 @@ import {otterlogs} from "./otterlogs";
  * over the task list and schedules each task by invoking the `taskSchedule`
  * function with task-specific parameters.
  *
+ * @param {OtterbotsConfig["tasks"]} tasks - The list of tasks to initialize.
  * @return {void} This function does not return a value.
  */
-export function otterbots_initTask(): void {
+export function otterbots_initTask(tasks?: OtterbotsConfig["tasks"]): void {
 
-    if (tasks.length === 0) {
-        otterlogs.debug('No tasks found in config/task.ts');
+    if (!tasks || tasks.length === 0) {
+        otterlogs.debug('No tasks found in configuration');
         return;
     }
 
@@ -40,6 +41,7 @@ export function otterbots_initTask(): void {
         otterlogs.error(`Error initializing tasks: ${error}`);
     }
 }
+
 
 /**
  * Schedules a task to run at a specific time or interval using a cron expression.

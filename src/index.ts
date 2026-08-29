@@ -1,7 +1,6 @@
 import {displayLogo} from "./utils/displayLogo";
 import dotenv from 'dotenv';
-import {clientGatewayIntent} from "../app/config/client";
-import {Client} from "discord.js";
+import {Client, GatewayIntentBits} from "discord.js";
 import {otterBots_loadCommands} from "./handlers/commandHandler";
 import {otterBots_initSalon} from "./utils/salon";
 import {otterBots_interactionCreate} from "./events/commandInteraction";
@@ -13,6 +12,7 @@ import {otterbots_eventHandler} from "./handlers/eventHandler";
 import {otterbots_otterguard} from "./utils/otterguard/otterguard";
 import {otterbots_initTask} from "./utils/task";
 import {Otterlyapi} from "./utils/otterlyapi/otterlyapi";
+import {OtterbotsConfig} from "./types/config";
 
 dotenv.config()
 
@@ -24,9 +24,20 @@ dotenv.config()
 export class Otterbots {
 
     private client: Client;
+    private config: OtterbotsConfig;
 
-    constructor(client?: Client) {
-        this.client = client ?? clientGatewayIntent
+    constructor(config: OtterbotsConfig) {
+        this.config = config;
+        this.client = new Client(config.clientOptions ?? {
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildVoiceStates,
+            ]
+        });
     }
 
     // Lancement du bot
@@ -89,7 +100,7 @@ export class Otterbots {
      * @return {Promise<void>} A promise that resolves when the OtterGuard service has started successfully.
      */
     public startOtterGuard(client: Client = this.client): void {
-         otterbots_otterguard(client)
+         otterbots_otterguard(client, this.config.otterguard)
     }
 
     /**
@@ -98,7 +109,7 @@ export class Otterbots {
      * @return {void} Does not return a value.
      */
     public initTask(): void {
-        otterbots_initTask()
+        otterbots_initTask(this.config.tasks)
     }
 
     // Bot startup events
@@ -129,12 +140,16 @@ export class Otterbots {
 
     // Initialisation des salons
     private async initSalons(client: Client = this.client): Promise<void> {
-      await otterBots_initSalon(client)
+      if (this.config.salons) {
+        await otterBots_initSalon(client, this.config.salons.categories, this.config.salons.botSalons)
+      }
     }
 
     // Initialize the emote react events
     private async initEmoteReact(client: Client = this.client): Promise<void> {
-        await otterBots_initEmoteReact(client)
+        if (this.config.reactions) {
+            await otterBots_initEmoteReact(client, this.config.reactions)
+        }
     }
 
     // Init OtterlyApiModule
@@ -144,3 +159,4 @@ export class Otterbots {
     }
 
 }
+

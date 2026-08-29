@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from 'vitest';
-import {OtterTask, TaskStatus} from "@/otterbots/utils/ottertask/OtterTask";
+import {OtterTask, TaskStatus} from "@/utils/ottertask/OtterTask";
 
 describe('Classe OtterTask', () => {
 

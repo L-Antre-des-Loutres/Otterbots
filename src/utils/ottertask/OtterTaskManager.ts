@@ -1,6 +1,6 @@
-import {OtterTask, TaskStatus} from "@/otterbots/utils/ottertask/OtterTask";
+import {OtterTask, TaskStatus} from "@/utils/ottertask/OtterTask";
 import cron, {ScheduledTask} from "node-cron";
-import {otterlogs} from "@/otterbots/utils/otterlogs";
+import {otterlogs} from "@/utils/otterlogs";
 
 /**
  * Interface for task execution results containing execution metadata.

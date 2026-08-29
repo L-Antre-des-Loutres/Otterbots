@@ -17,6 +17,6 @@
     },
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*", "example/**/*", "tests/**/*"],
   "exclude": ["node_modules", "build"]
 }

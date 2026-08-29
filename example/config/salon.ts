@@ -1,4 +1,4 @@
-import {SalonCategory, SalonType} from "../../otterbots/types/salonType";
+import {SalonCategory, SalonType} from "../../src/types/salonType";
 
 const ROLE_ID = "1254833145749049385";
 

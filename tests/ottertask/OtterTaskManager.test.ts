@@ -1,9 +1,9 @@
 import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
-import {OtterTask, TaskStatus} from "@/otterbots/utils/ottertask/OtterTask";
-import {OtterTaskManager} from "@/otterbots/utils/ottertask/OtterTaskManager";
-import {otterlogs} from "@/otterbots/utils/otterlogs";
+import {OtterTask, TaskStatus} from "@/utils/ottertask/OtterTask";
+import {OtterTaskManager} from "@/utils/ottertask/OtterTaskManager";
+import {otterlogs} from "@/utils/otterlogs";
 
-vi.mock('@/otterbots/utils/otterlogs', () => ({
+vi.mock('@/utils/otterlogs', () => ({
     otterlogs: {
         log: vi.fn(),
         info: vi.fn(),

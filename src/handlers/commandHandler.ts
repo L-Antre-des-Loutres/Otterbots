@@ -13,7 +13,7 @@ export async function otterBots_loadCommands(client: Client): Promise<void> {
     client.on("clientReady", async () => {
         const rootDir = path.join(__dirname, "..");
         const commandsPath = path.join(rootDir, "commands");
-        const additionalPath = path.join(rootDir, "../app/commands/");
+        const additionalPath = path.join(rootDir, "../example/commands/");
 
         let commandFiles: string[] = [];
 

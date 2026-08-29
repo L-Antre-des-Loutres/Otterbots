@@ -1,5 +1,4 @@
-import {Client} from "discord.js";
-import {otterbots_reactions} from "../../app/config/emojiReact";
+import {Client, Message} from "discord.js";
 import {otterlogs} from "../utils/otterlogs";
 
 /**
@@ -8,14 +7,15 @@ import {otterlogs} from "../utils/otterlogs";
  * against a set of conditions, and reacts with the corresponding emoji if the condition is met.
  *
  * @param {Client} client - The Discord client instance used to handle message events and reactions.
+ * @param {Array<{condition: (msg: Message) => boolean, emoji: string}>} reactions - The list of reactions to apply.
  * @return {Promise<void>} Resolves once the events listener is initialized.
  */
-export async function otterBots_initEmoteReact(client: Client): Promise<void> {
+export async function otterBots_initEmoteReact(client: Client, reactions: Array<{ condition: (msg: Message) => boolean; emoji: string; }>): Promise<void> {
     client.on('messageCreate', async (message) => {
         if (message.author.bot) return;
 
         // Parcours de la liste des conditions
-        for (const { condition, emoji } of otterbots_reactions) {
+        for (const { condition, emoji } of reactions) {
             try {
                 if (condition(message)) {
                     await message.react(emoji);

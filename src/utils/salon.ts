@@ -15,7 +15,7 @@ import {
     VoiceChannel
 } from "discord.js";
 import {otterlogs} from "./otterlogs";
-import {botSalon, salonCategory} from "../../app/config/salon";
+import {SalonCategory, SalonType} from "../types/salonType";
 import fs from "fs";
 
 /**
@@ -41,10 +41,12 @@ type JsonSalonType = {
  * Creates Discord text channels within specific categories for a guild. Ensures that categories and channels are created only if they do not already exist, and manages permissions for a specific role.
  *
  * @param {Client} client The Discord bot client instance used to interact with the Discord API and execute guild-related operations.
+ * @param {SalonCategory[]} salonCategory The list of categories to create.
+ * @param {SalonType[]} botSalon The list of salons to create.
  * @return {Promise<void>} A promise that resolves once the channels and roles are created or the operation concludes. If an error occurs, it logs the error and does not throw it further.
  */
-export async function otterBots_initSalon(client: Client): Promise<void> {
-    client.on('clientReady', async (): Promise<void> => {
+export async function otterBots_initSalon(client: Client, salonCategory: SalonCategory[], botSalon: SalonType[]): Promise<void> {
+    client.on('ready', async (): Promise<void> => {
         // Ensure channels.json exists
         await createDefaultJson()
 
@@ -99,7 +101,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                     let categoryChannel = guild.channels.cache.find(
                         (channel) =>
                             channel.name === category.name &&
-                            channel.type === 4
+                            channel.type === ChannelType.GuildCategory
                     );
 
                     // If not, create it
@@ -124,6 +126,8 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
 
                     // Creates channels in this category
                     for (const salon of botSalon) {
+                        if (salon.category !== category.id) continue;
+                        
                         let channelData: JsonSalonType = {name: "", id: "", webhook: ""};
                         if (!channelsDiscord.includes(salon.name)) {
                             const newChannel = await guild.channels.create({
@@ -184,6 +188,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
         }
     });
 }
+
 
 /**
  * Retrieves the first webhook URL for a specific channel.

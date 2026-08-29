@@ -1,7 +1,7 @@
 import {Client, Message, TextChannel} from "discord.js";
-import {authorizedDomains, otterguardConfig} from "../../../../app/config/otterguardConfig";
 import {otterguard_Embed, otterguard_EmbedModeration} from "../embed";
 import {otterlogs} from "../../otterlogs";
+import {OtterbotsConfig} from "../../../types/config";
 
 /**
  * Monitors and handles messages in a Discord server to enforce restrictions on URLs and links. It performs checks to delete messages
@@ -10,14 +10,15 @@ import {otterlogs} from "../../otterlogs";
  *
  * @param {Client} client - The Discord.js client instance used to interact with the Discord API and listen for message events.
  * @param message
+ * @param {OtterbotsConfig["otterguard"]} config - The Otterguard configuration.
  * @return {Promise<void>} Resolves when the function completes its asynchronous operations for processing messages.
  */
-export async function otterguard_protectLink(client: Client, message: Message) {
+export async function otterguard_protectLink(client: Client, message: Message, config?: OtterbotsConfig["otterguard"]) {
     try {
         let reason, titleContent
 
         // Check if the link protection feature is enabled
-        if (!otterguardConfig.protectLink) return
+        if (!config?.protectLink) return
 
         // Check if the link is a discord invite
         if (message.content.includes('discord.gg/')) {
@@ -120,7 +121,7 @@ export async function otterguard_protectLink(client: Client, message: Message) {
         if (message.content.includes('https://')) {
             try {
                 const link = message.content.match(/https?:\/\/[^\s]*/)?.[0] || '';
-                const domainFound = authorizedDomains.some(domain => link.includes(domain));
+                const domainFound = config?.authorizedDomains?.some(domain => link.includes(domain));
                 if (!domainFound) {
 
                     try {
@@ -171,3 +172,4 @@ export async function otterguard_protectLink(client: Client, message: Message) {
         otterlogs.error('Error in message handler: ' + error);
     }
 }
+

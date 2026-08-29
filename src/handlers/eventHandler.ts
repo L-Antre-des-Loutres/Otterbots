@@ -9,8 +9,16 @@ import {otterlogs} from "../utils/otterlogs";
  * @param client
  */
 export async function otterbots_eventHandler(client: Client) {
-    const eventsPath = path.join(__dirname, '../../app/events');
-    const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
+    const isBuild = __dirname.includes("build") || __dirname.includes("dist");
+    const ext = isBuild ? ".js" : ".ts";
+    const eventsPath = path.join(__dirname, '../../example/events');
+    
+    if (!fs.existsSync(eventsPath)) {
+        otterlogs.warn("Events folder not found at " + eventsPath);
+        return;
+    }
+
+    const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith(ext));
 
     try {
         for (const file of eventFiles) {

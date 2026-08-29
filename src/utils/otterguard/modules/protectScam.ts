@@ -1,7 +1,7 @@
 import {Client, Message, TextChannel} from "discord.js";
 import {otterguard_Embed, otterguard_EmbedModeration} from "../embed";
 import {otterlogs} from "../../otterlogs";
-import {otterguardConfig} from "../../../../app/config/otterguardConfig";
+import {OtterbotsConfig} from "../../../types/config";
 
 /**
  * Monitors and removes potentially malicious or scam messages within a Discord server.
@@ -9,12 +9,13 @@ import {otterguardConfig} from "../../../../app/config/otterguardConfig";
  *
  * @param {Client} client - The Discord client instance, used to listen for incoming messages and take actions accordingly.
  * @param message
+ * @param {OtterbotsConfig["otterguard"]} config - The Otterguard configuration.
  * @return {void} This function does not return any value.
  */
-export async function otterguard_protectScam(client: Client, message: Message) {
+export async function otterguard_protectScam(client: Client, message: Message, config?: OtterbotsConfig["otterguard"]) {
 
     // Check if the scam protection feature is enabled
-    if (!otterguardConfig.protectScam) return
+    if (!config?.protectScam) return
 
         /**
          * An array of regular expression patterns used to detect potential scam content.
@@ -92,3 +93,4 @@ export async function otterguard_protectScam(client: Client, message: Message) {
             }
         }
 }
+
